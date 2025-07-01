@@ -62,29 +62,29 @@ Python 3.x installed
 Git installed.
 
 1. **Clone the Repository**
-    git clone https://github.com/R-gitonga/Annah-s-Bakey.git
-    cd Annah-s-Bakey
+    * git clone https://github.com/R-gitonga/Annah-s-Bakey.git
+    * cd Annah-s-Bakey
 
 2. **Create and activate a virtual environment**
 Although not necessary, it is highly recommended to use virtual environments to manage project dependencies
-        python -m venv .annah(or whatever name you fancy usually .venv is fine)
-        .annah\scripts\activate
+        * python -m venv .annah(or whatever name you fancy usually .venv is fine)
+        * .annah\scripts\activate
 
 3. **Install Dependencies**
 Install Flask and other required Python packages using pip
-    pip install Flask
-    pip freeze > requirements.txt (use this command to install dependencies used on this project. Ensure virtual environment is on)
+    * pip install Flask
+    * pip freeze > requirements.txt (use this command to install dependencies used on this project. Ensure virtual environment is on)
 
 4. **Set Flask Environment Variables**
 Tell Flask where your application file is.
-    **On Windows (Command Prompt)**:
-        set FLASK_APP=app.py
-    **On Windows (PowerShell)**:
-        $env:FLASK_APP = "app.py"
+    * **On Windows (Command Prompt)**:
+        * set FLASK_APP=app.py
+    * **On Windows (PowerShell)**:
+        * $env:FLASK_APP = "app.py"
 
 5. **Run the Application**
 Start the Flask development server in debug mode.
-    flask run --debug
+    * flask run --debug
 
 Database Management
 The project uses an SQLite database(bakery.db) located in the data/ directory
