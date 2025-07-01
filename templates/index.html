@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Annah's Bakery{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-content-text">FRESHLY</h1>
+        <h1 class="hero-content-text">BAKED</h1>
+        <h1 class="hero-content-text">GOODNESS</h1>
+        <h1 class="hero-content-text">EVERYDAY</h1>
+    </div>
+    <div class="hero-button">
+        <a href="#featured-products" class="btn btn-primary" id="hero-button-btn">
+            BROWSE MENU
+        </a>
+        </div>
+</div>
+<div class="profile-section">
+    <div class="container shadow-lg m-2 p-2 d-block profile-title">
+        <h4>About Annah</h4>
+    </div>
+    <div class="container m-2 p-2 gap-5 profile">
+        <div class="container m-2 py-2 profile-avatar">
+            <img class="
+            shadow rounded-circle" id="img-avatar" src="{{ url_for('static', filename='images/profile-img.jpg') }}" alt="Annah Mwanzia Nduku">
+        </div>
+        <div class="container p-1 profile-text">
+            <p class="m-2 p-1 fs-4 fw-normal letter-spacing-4px lh-base rounded shadow-lg profile-text-p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium hic facere ad ut dignissimos, rem, nesciunt possimus sequi, sed consequuntur iure provident! Incidunt a hic sunt rem, dolore asperiores. Porro tempore totam blanditiis incidunt at rerum ipsum accusantium voluptatem eum dignissimos veritatis deserunt nam sapiente, ipsa magnam neque necessitatibus esse dolore, excepturi ex eligendi. Impedit, fugiat! Atque necessitatibus ullam ex provident doloremque maxime illo quis ipsam est placeat facilis nulla nesciunt sit eaque, sunt modi asperiores odit quidem dignissimos reiciendis suscipit tenetur saepe quae magni. Vero placeat amet mollitia nam sint aut beatae pariatur vitae, doloremque soluta necessitatibus tempore voluptate!
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="d-block m-2 p-2 mx-0 w-100" id="featured-products">
+    <h1 class="shadow display-4">Featured Products</h1>
+</div>
+
+
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <img src="{{ url_for('static', filename=product['image_url']) }}" alt="{{ product['product_name'] }}">
+        <h3>{{ product['product_name'] }}</h3>
+        <p>{{ product['product_description'] }}</p>
+        <p><strong>KES {{ product['price'] }}</strong></p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

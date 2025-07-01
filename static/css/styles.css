@@ -1,0 +1,315 @@
+#navigation {
+    background-color: none;
+    background: linear-gradient(to right, #C171CB, #67C342);
+}
+
+.nav-brand {
+    font-family: 'Dancing Script', cursive;
+    font-style: italic;
+    font-size: 2.2em;
+    color: #67C342;
+}
+
+.menu-bar {
+    font-family: 'Dancing Script';
+    font-style: italic;
+    font-size: 2.2em;
+    color: #C171CB;
+}
+
+.container-main {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.hero-section {
+    background-image: url("../images/hero-section-img.jpg");    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+
+.hero-content{
+    margin-right: 25%;
+    margin-bottom: 35px;
+}
+
+.hero-content-text {
+    font-size: 4.5em;
+    font-family: 'Martel', sans-serif;
+    margin-bottom: 0;
+    text-shadow: 15px 2px 7px rgb(0, 0, 0, 0.9);
+    background: radial-gradient(#67C342 50%, #d12ee6 30%, #d12ee6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-emphasis-color: transparent;
+    letter-spacing: 50px;
+    line-height: 1.5em;
+}
+
+#hero-button-btn {
+    margin: 10px;
+    padding: 5px;
+    background-color: #6bb54e;
+    border-radius: 30px;
+    border: #67C342 solid 1px;
+    font-family: 'Martel', serif;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 3px;
+    /* display: inline-block; */
+    /* position: relative; */
+}
+
+#hero-button-btn:hover {
+    color: #67C342;
+    background-color: #C171CB;
+    border: #C171CB solid 1px;
+
+}
+
+.profile-title {
+    margin: 5px 2px;
+    background: linear-gradient(to right, #C171CB, #67C342);
+    /* height: 50px; */
+}
+
+.profile-title h4 {
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-family: 'Martel', serif;
+    letter-spacing: 5px;
+    color: #fff;
+    text-shadow: 10px 0 6px rgb(6, 5, 4, 0.9);
+}
+
+.profile {
+    display: flex;
+
+}
+.profile-avatar {
+    width: auto;
+}
+
+#img-avatar {
+    height: 300px;
+    width: 300px;
+}
+
+#featured-products h1 {
+    font-family: 'Martel', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: 500;
+}
+
+.product-grid {
+    display: grid;
+    /* Example: 3 columns, adjust as needed */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    /* Space between cards */
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.product-card img {
+    /* Method 1: Set a max-width to ensure it fits its container */
+    max-width: 100%;
+    height: auto;
+    /* Maintain aspect ratio */
+    display: block;
+    /* Remove extra space below image */
+    margin: 0 auto 15px auto;
+    /* Center image and add space below */
+}
+
+@media (max-width: 1199px) {
+    .hero-section {
+        height: 550px;
+
+    }
+    .hero-content {
+        margin-right: 10%;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 992px) {
+    .container-main {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    #navigation {
+        max-width: 100%;
+    }
+    .hero-section {
+        height: 600px;
+    }
+    .hero-content h1{
+        font-size: 3.5em;
+
+    }
+
+    .hero-content {
+        margin-right: 8%;
+        margin-bottom: 0;   
+    }
+
+    .hero-content-text {
+        font-size: 3.5em;
+        letter-spacing: 40px;
+        line-height: 2.4em;
+    }
+    
+    #hero-button-btn {
+        margin:0;
+        padding: 0;
+
+    }
+
+    .profile {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .profile-title, .profile-text {
+        max-width: 100%;
+    }
+
+    .profile-avatar {
+        align-self: center;
+    }
+
+    .profile-text-p {
+        font-size: 3.5em;
+        letter-spacing: 4px;
+    }
+
+
+}
+
+@media (max-width: 768px) {
+    .container-main {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    #navigation {
+        max-width: 100%;
+    }
+    .hero-section {
+        height: 400px;
+
+    }
+    .hero-content h1 {
+        font-size: 2.5em;
+
+    }
+    .hero-content {
+        margin-right: 5%;
+        margin-bottom: 0;   
+    }
+
+    .hero-content-text {
+        font-size: 3.5em;
+        letter-spacing: 30px;
+        line-height: 2.2em;
+        
+    }
+
+    #hero-button-btn {
+        margin: 0;
+        padding: 0;
+
+    }
+
+    .profile {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+    }
+    .profile-title, .profile-text {
+        max-width: 100%;
+    }
+    .profile-text-p {
+        font-size: 3.5rem;
+        letter-spacing: 4px;
+    }
+
+    .profile-avatar {
+        align-self: center;
+    }
+
+}
+
+@media (max-width: 576px) {
+    .container-main {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    #navigation {
+        max-width: 100%;
+    }
+    .hero-section {
+        height: 345px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8em;
+
+    }
+
+    .hero-content {
+        margin-right: 10%;
+        margin-bottom: 0;   
+    }
+    .hero-content-text {
+        font-size: 3;
+        letter-spacing: 30px;
+        line-height: 2.5em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .hero-content .btn {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    .profile {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+
+    }
+    .profile-title, .profile-text {
+        max-width: 100%;
+    }
+
+    .profile-avatar {
+        align-self: center;
+    }
+
+    .profile-text-p {
+        font-size: 2.5rem;
+        letter-spacing: 4px;
+    }
+}
