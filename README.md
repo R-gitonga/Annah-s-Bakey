@@ -11,7 +11,7 @@ This is a delightful web application buitl with Flask, designed to showcase fres
 * [Future Enhancements](#future-enhancements)
 * [License](#license)
 
-#features
+Features
 * **Dynamic Product Display**: Fetches and displays product information directly form SQLite database
 * **Hero Section**: prominent welcome section with a background image, overlay text, and a call-to-action button
 * **Responsive Navigation Bar**: Features a gradient background, brand titke, and navigation links, designed to adapt to various screen sizes using Bootstrap.
@@ -19,14 +19,14 @@ This is a delightful web application buitl with Flask, designed to showcase fres
 * **Smooth Scroll Anchor**: The 'Browse Menu' button uin the hero section smoothly scrolls to the "Featured Products" section.
 * **Database Intergration**: Uses SQLite for simple and efficient data storage.
 
-#technologies-used
+Technologies used
 * **Backend Framework**: [Flask(Python)](https://flask.palletsprojects.com/en/stable/)
 * **Database**: [SQLite3](https://sqlite.org/index.html)
 * **Templating Engine**: [jinja2](https://jinja.palletsprojects.com/en/stable/)
 * **Frontend Framework**:[ Bootstrap 5.3](https://getbootstrap.com/)
 * **Version Control**: [Git](https://git-scm.com/downloads)
 
-#design-resources
+Design Resources
 To aid in the design and planning phases of this project, the following tools were utilized
 * **Figma (Design Prototype)**: Used for creating the initial UI/UX design and mockups for the application's layout and visual elements.
     [Annah's Bakery Figma Design](https://www.figma.com/design/GLuq36nJJyR3JjDxGlYlxk/Annah-s-Bakery?node-id=16-153&m=dev&t=SamXmvDEVVWDFdMm-1)
@@ -37,7 +37,7 @@ To aid in the design and planning phases of this project, the following tools we
 * **Gleel.io (Entity Relationship Diagram visualizer)**: Used to visualize the relationships between various tables in the database.
     [Entity Relatuonship Diagram](https://app.gleek.io/diagrams/-2Xn1HDkrv6RUOMJ1Idbqw)
 
-#project-structure
+Project Structure
 Annah's Bakery/
 |---.annah/     # python virtual environemnt
 |---data/
@@ -56,7 +56,7 @@ Annah's Bakery/
 |---README.md   #This file
 |---requirements.txt #list python dependencies for this project
 
-#setup-and-installation
+Setup and Installation
 **prerequisites**
 Python 3.x installed
 Git installed.
@@ -86,13 +86,13 @@ Tell Flask where your application file is.
 Start the Flask development server in debug mode.
     flask run --debug
 
-#database-management
+Database Management
 The project uses an SQLite database(bakery.db) located in the data/ directory
 
 * **Data Storage**: Product information is stored here.
 * **Management Tool**: You can use a tool like **DB Browser for SQLite** to inspect, modify, or add data to the database.
 
-#future-enhancements
+Future Enhancements
 1. **Dedicated Product Detail Pages**: Users will be able to click on a product and view more details on a separate page.
 2. **Shopping Cart Functionality**: Allow users to add products to a cart and proceed to checkout.
 3. **Admin Panel**: Create a Simple interface to add, edit, or delete products in the database.
@@ -100,7 +100,7 @@ The project uses an SQLite database(bakery.db) located in the data/ directory
 5. **Improve Search/Filtering**: Add functionality to search for products or filter by category.
 6. **Deployment**: Prepare the application for deployemnt to a live server.
 
-#license
+License
 This project is open-source and availabe under the MIT License.
 
 
