@@ -1,6 +1,6 @@
 # Annah's Bakery
 
-This is a delightful web application buitl with Flask, designed to showcase freshly baked goods. This project provides a foundationa; e-commerce-like display, focusing on clean desing and responsive user experience.
+This is a delightful web application built with Flask, designed to showcase freshly baked goods. This project provides a foundational e-commerce-like display, focusing on clean desing and responsive user experience.
 
 * [Features](#features)
 * [Technologies used](#technologies-used)
@@ -14,10 +14,10 @@ This is a delightful web application buitl with Flask, designed to showcase fres
 Features
 * **Dynamic Product Display**: Fetches and displays product information directly form SQLite database
 * **Hero Section**: prominent welcome section with a background image, overlay text, and a call-to-action button
-* **Responsive Navigation Bar**: Features a gradient background, brand titke, and navigation links, designed to adapt to various screen sizes using Bootstrap.
-* **Product Grid**: Products are displayed in a responsive grid layout using Bootstrap's grid system, adjusting colum counts based on screen size
-* **Smooth Scroll Anchor**: The 'Browse Menu' button uin the hero section smoothly scrolls to the "Featured Products" section.
-* **Database Intergration**: Uses SQLite for simple and efficient data storage.
+* **Responsive Navigation Bar**: Features a gradient background, brand title, and navigation links, designed to adapt to various screen sizes using Bootstrap.
+* **Product Grid**: Products are displayed in a responsive grid layout using Bootstrap's grid system, adjusting column counts based on screen size
+* **Smooth Scroll Anchor**: The 'Browse Menu' button in the hero section smoothly scrolls to the "Featured Products" section.
+* **Database Integration**: Uses SQLite for simple and efficient data storage.
 
 Technologies used
 * **Backend Framework**: [Flask(Python)](https://flask.palletsprojects.com/en/stable/)
@@ -26,15 +26,15 @@ Technologies used
 * **Frontend Framework**:[ Bootstrap 5.3](https://getbootstrap.com/)
 * **Version Control**: [Git](https://git-scm.com/downloads)
 
-Design Resources
+#design-resources
 To aid in the design and planning phases of this project, the following tools were utilized
 * **Figma (Design Prototype)**: Used for creating the initial UI/UX design and mockups for the application's layout and visual elements.
     [Annah's Bakery Figma Design](https://www.figma.com/design/GLuq36nJJyR3JjDxGlYlxk/Annah-s-Bakery?node-id=16-153&m=dev&t=SamXmvDEVVWDFdMm-1)
 
-* **Excalidraw (WireFrame and Database Tables)**: used to create the original wireframe and visualize the database tables.
+* **Excalidraw (WireFrame and Database Tables)**: used to create the original wireframe and visualise the database tables.
     [Wireframe and Database Tables](https://excalidraw.com/#json=iX84712tmU8o82IcS4Gty,Hq0oUYtNSmy5L_NdZWXIPA)
 
-* **Gleel.io (Entity Relationship Diagram visualizer)**: Used to visualize the relationships between various tables in the database.
+* **Gleel.io (Entity Relationship Diagram visualizer)**: Used to visualise the relationships between various tables in the database.
     [Entity Relatuonship Diagram](https://app.gleek.io/diagrams/-2Xn1HDkrv6RUOMJ1Idbqw)
 
 Project Structure
@@ -54,7 +54,7 @@ Annah's Bakery/
 |---app.py      #Main FLask application file
 |---.gitignore  #intentionally untracked files to be ignored by Git
 |---README.md   #This file
-|---requirements.txt #list python dependencies for this project
+|---requirements.txt #list Python dependencies for this project
 
 Setup and Installation
 **prerequisites**
@@ -66,16 +66,16 @@ Git installed.
     cd Annah-s-Bakey
 
 2. **Create and activate a virtual environment**
-Although not necessary it is highly recommended to use virtual environments to manage project dependencies
+Although not necessary, it is highly recommended to use virtual environments to manage project dependencies
         python -m venv .annah(or whatever name you fancy usually .venv is fine)
         .annah\scripts\activate
 
 3. **Install Dependencies**
-Install Flask and other required python packages using pip
+Install Flask and other required Python packages using pip
     pip install Flask
-    pip freeze > requirements.txt (use this command to install dependecies used on this project. ensure virtual environment is on)
+    pip freeze > requirements.txt (use this command to install dependencies used on this project. Ensure virtual environment is on)
 
-4. **Set Flask Environement Variables**
+4. **Set Flask Environment Variables**
 Tell Flask where your application file is.
     **On Windows (Command Prompt)**:
         set FLASK_APP=app.py
@@ -98,7 +98,7 @@ Future Enhancements
 3. **Admin Panel**: Create a Simple interface to add, edit, or delete products in the database.
 4. **User Authentication**: Implement user login/registration.
 5. **Improve Search/Filtering**: Add functionality to search for products or filter by category.
-6. **Deployment**: Prepare the application for deployemnt to a live server.
+6. **Deployment**: Prepare the application for deployment to a live server.
 
 License
 This project is open-source and availabe under the MIT License.
