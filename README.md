@@ -2,39 +2,39 @@
 
 This is a delightful web application buitl with Flask, designed to showcase freshly baked goods. This project provides a foundationa; e-commerce-like display, focusing on clean desing and responsive user experience.
 
-[Features](#features)
-[Technologies used](#technologies-used)
-[Design Resources](#design-resources)
-[Project Structure](#project-structure)
-[Setup and Installation](#setup-and-installation)
-[Database Management](#database-management)
-[Future Enhancements](#future-enhancements)
-[License](#license)
+* [Features](#features)
+* [Technologies used](#technologies-used)
+* [Design Resources](#design-resources)
+* [Project Structure](#project-structure)
+* [Setup and Installation](#setup-and-installation)
+* [Database Management](#database-management)
+* [Future Enhancements](#future-enhancements)
+* [License](#license)
 
 #features
-**Dynamic Product Display**: Fetches and displays product information directly form SQLite database
-**Hero Section**: prominent welcome section with a background image, overlay text, and a call-to-action button
-**Responsive Navigation Bar**: Features a gradient background, brand titke, and navigation links, designed to adapt to various screen sizes using Bootstrap.
-**Product Grid**: Products are displayed in a responsive grid layout using Bootstrap's grid system, adjusting colum counts based on screen size
-**Smooth Scroll Anchor**: The 'Browse Menu' button uin the hero section smoothly scrolls to the "Featured Products" section.
-**Database Intergration**: Uses SQLite for simple and efficient data storage.
+* **Dynamic Product Display**: Fetches and displays product information directly form SQLite database
+* **Hero Section**: prominent welcome section with a background image, overlay text, and a call-to-action button
+* **Responsive Navigation Bar**: Features a gradient background, brand titke, and navigation links, designed to adapt to various screen sizes using Bootstrap.
+* **Product Grid**: Products are displayed in a responsive grid layout using Bootstrap's grid system, adjusting colum counts based on screen size
+* **Smooth Scroll Anchor**: The 'Browse Menu' button uin the hero section smoothly scrolls to the "Featured Products" section.
+* **Database Intergration**: Uses SQLite for simple and efficient data storage.
 
 #technologies-used
-**Backend Framework**: [Flask(Python)](https://flask.palletsprojects.com/en/stable/)
-**Database**: [SQLite3](https://sqlite.org/index.html)
-**Templating Engine**: [jinja2](https://jinja.palletsprojects.com/en/stable/)
-**Frontend Framework**:[ Bootstrap 5.3](https://getbootstrap.com/)
-**Version Control**: [Git](https://git-scm.com/downloads)
+* **Backend Framework**: [Flask(Python)](https://flask.palletsprojects.com/en/stable/)
+* **Database**: [SQLite3](https://sqlite.org/index.html)
+* **Templating Engine**: [jinja2](https://jinja.palletsprojects.com/en/stable/)
+* **Frontend Framework**:[ Bootstrap 5.3](https://getbootstrap.com/)
+* **Version Control**: [Git](https://git-scm.com/downloads)
 
 #design-resources
 To aid in the design and planning phases of this project, the following tools were utilized
-**Figma (Design Prototype)**: Used for creating the initial UI/UX design and mockups for the application's layout and visual elements.
+* **Figma (Design Prototype)**: Used for creating the initial UI/UX design and mockups for the application's layout and visual elements.
     [Annah's Bakery Figma Design](https://www.figma.com/design/GLuq36nJJyR3JjDxGlYlxk/Annah-s-Bakery?node-id=16-153&m=dev&t=SamXmvDEVVWDFdMm-1)
 
-**Excalidraw (WireFrame and Database Tables)**: used to create the original wireframe and visualize the database tables.
+* **Excalidraw (WireFrame and Database Tables)**: used to create the original wireframe and visualize the database tables.
     [Wireframe and Database Tables](https://excalidraw.com/#json=iX84712tmU8o82IcS4Gty,Hq0oUYtNSmy5L_NdZWXIPA)
 
-**Gleel.io (Entity Relationship Diagram visualizer)**: Used to visualize the relationships between various tables in the database.
+* **Gleel.io (Entity Relationship Diagram visualizer)**: Used to visualize the relationships between various tables in the database.
     [Entity Relatuonship Diagram](https://app.gleek.io/diagrams/-2Xn1HDkrv6RUOMJ1Idbqw)
 
 #project-structure
@@ -89,8 +89,8 @@ Start the Flask development server in debug mode.
 #database-management
 The project uses an SQLite database(bakery.db) located in the data/ directory
 
-**Data Storage**: Product information is stored here.
-**Management Tool**: You can use a tool like **DB Browser for SQLite** to inspect, modify, or add data to the database.
+* **Data Storage**: Product information is stored here.
+* **Management Tool**: You can use a tool like **DB Browser for SQLite** to inspect, modify, or add data to the database.
 
 #future-enhancements
 1. **Dedicated Product Detail Pages**: Users will be able to click on a product and view more details on a separate page.
