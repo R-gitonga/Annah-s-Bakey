@@ -26,7 +26,7 @@ Technologies used
 * **Frontend Framework**:[ Bootstrap 5.3](https://getbootstrap.com/)
 * **Version Control**: [Git](https://git-scm.com/downloads)
 
-#design-resources
+Design Resources
 To aid in the design and planning phases of this project, the following tools were utilized
 * **Figma (Design Prototype)**: Used for creating the initial UI/UX design and mockups for the application's layout and visual elements.
     [Annah's Bakery Figma Design](https://www.figma.com/design/GLuq36nJJyR3JjDxGlYlxk/Annah-s-Bakery?node-id=16-153&m=dev&t=SamXmvDEVVWDFdMm-1)
@@ -38,7 +38,7 @@ To aid in the design and planning phases of this project, the following tools we
     [Entity Relatuonship Diagram](https://app.gleek.io/diagrams/-2Xn1HDkrv6RUOMJ1Idbqw)
 
 Project Structure
-Annah's Bakery/
+* Annah's Bakery/
 * |---.annah/     # python virtual environemnt
 * |---data/
     * |---bakery.db       # SQLite Database file
