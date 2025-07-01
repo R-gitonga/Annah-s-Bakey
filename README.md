@@ -67,8 +67,8 @@ Git installed.
 
 2. **Create and activate a virtual environment**
 Although not necessary, it is highly recommended to use virtual environments to manage project dependencies
-        * python -m venv .annah(or whatever name you fancy usually .venv is fine)
-        * .annah\scripts\activate
+* python -m venv .annah(or whatever name you fancy usually .venv is fine)
+* .annah\scripts\activate
 
 3. **Install Dependencies**
 Install Flask and other required Python packages using pip
