@@ -39,22 +39,22 @@ To aid in the design and planning phases of this project, the following tools we
 
 Project Structure
 * Annah's Bakery/
-* |---.annah/     # python virtual environemnt
-* |---data/
-    * |---bakery.db       # SQLite Database file
-* |---static/
-    * |---css/
-        * |---style.css
-    * |---images/     # All static image assets
-        * |---all_images.jpg
-    * |--- js/        #Javascript files
-* |---templates/
-    * |---base.html       # base layout template 
-    * |---index.html      # homepage template
-* |---app.py      #Main FLask application file
-* |---.gitignore  #intentionally untracked files to be ignored by Git
-* |---README.md   #This file
-* |---requirements.txt #list Python dependencies for this project
+    * |---.annah/     # python virtual environemnt
+    * |---data/
+        * |---bakery.db       # SQLite Database file
+    * |---static/
+        * |---css/
+            * |---style.css
+        * |---images/     # All static image assets
+            * |---all_images.jpg
+        * |--- js/        #Javascript files
+    * |---templates/
+        * |---base.html       # base layout template 
+        * |---index.html      # homepage template
+    * |---app.py      #Main FLask application file
+    * |---.gitignore  #intentionally untracked files to be ignored by Git
+    * |---README.md   #This file
+    * |---requirements.txt #list Python dependencies for this project
 
 Setup and Installation
 **prerequisites**
