@@ -41,16 +41,16 @@ Project Structure
 Annah's Bakery/
 * |---.annah/     # python virtual environemnt
 * |---data/
-    |---bakery.db       # SQLite Database file
+    * |---bakery.db       # SQLite Database file
 * |---static/
-    |---css/
-        |---style.css
-    |---images/     # All static image assets
-        |---all_images.jpg
-    |--- js/        #Javascript files
+    * |---css/
+        * |---style.css
+    * |---images/     # All static image assets
+        * |---all_images.jpg
+    * |--- js/        #Javascript files
 * |---templates/
-    |---base.html       # base layout template 
-    |---index.html      # homepage template
+    * |---base.html       # base layout template 
+    * |---index.html      # homepage template
 * |---app.py      #Main FLask application file
 * |---.gitignore  #intentionally untracked files to be ignored by Git
 * |---README.md   #This file
