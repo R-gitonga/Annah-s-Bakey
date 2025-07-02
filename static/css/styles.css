@@ -1,3 +1,8 @@
+/* Temporarily hide horizontal scroll to diagnose where the overflow is coming from */
+body {
+    overflow-x: hidden;
+}
+
 #navigation {
     background-color: none;
     background: linear-gradient(to right, #C171CB, #67C342);
@@ -27,7 +32,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 550px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,7 +42,7 @@
 
 
 .hero-content{
-    margin-right: 25%;
+    /* margin-right: 25%; */
     margin-bottom: 35px;
 }
 
@@ -66,8 +71,6 @@
     color: #fff;
     text-decoration: none;
     letter-spacing: 3px;
-    /* display: inline-block; */
-    /* position: relative; */
 }
 
 #hero-button-btn:hover {
@@ -80,13 +83,11 @@
 .profile-title {
     margin: 5px 2px;
     background: linear-gradient(to right, #C171CB, #67C342);
-    /* height: 50px; */
 }
 
 .profile-title h4 {
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
     font-family: 'Martel', serif;
     letter-spacing: 5px;
     color: #fff;
@@ -97,16 +98,13 @@
     display: flex;
 
 }
-.profile-avatar {
-    width: auto;
-}
 
 #img-avatar {
     height: 300px;
     width: 300px;
 }
 
-#featured-products h1 {
+#featured-products h1, h1, h5 {
     font-family: 'Martel', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-weight: 500;
 }
@@ -116,16 +114,31 @@
     object-fit: cover;
     object-position: center;
 }
+.product-feature-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin: 20px auto 0 auto;
+}
 
+.why-us-text {
+    font-family: 'Libertinus Mono', 'Martel', serif;
+}
 @media (max-width: 1199px) {
-    .hero-section {
+
+    .read-more-toggle {
+        display: none;
+        }
+    /* .hero-section {
         height: 550px;
 
     }
     .hero-content {
         margin-right: 10%;
         margin-bottom: 30px;
-    }
+    } */
 }
 
 @media (max-width: 992px) {
@@ -136,49 +149,17 @@
     #navigation {
         max-width: 100%;
     }
-    .hero-section {
-        height: 600px;
-    }
-    .hero-content h1{
-        font-size: 3.5em;
-
-    }
-
-    .hero-content {
-        margin-right: 8%;
-        margin-bottom: 0;   
-    }
-
-    .hero-content-text {
-        font-size: 3.5em;
-        letter-spacing: 40px;
-        line-height: 2.4em;
-    }
-    
-    #hero-button-btn {
-        margin:0;
-        padding: 0;
-
-    }
 
     .profile {
         display: flex;
         flex-direction: column;
-        max-width: 100%;
+        align-items: center;
     }
-
-    .profile-title, .profile-text {
-        max-width: 100%;
+    .why-choose-us-card {
+        display: flex;
+        flex-direction: column;
     }
-
-    .profile-avatar {
-        align-self: center;
-    }
-
-    .profile-text-p {
-        font-size: 3.5em;
-        letter-spacing: 4px;
-    }
+    
 
 
 }
@@ -193,31 +174,19 @@
         max-width: 100%;
     }
     .hero-section {
-        height: 400px;
-
+        height: auto;
     }
-    .hero-content h1 {
-        font-size: 2.5em;
 
-    }
     .hero-content {
-        margin-right: 5%;
-        margin-bottom: 0;   
+        margin-right: 0;
+        height: auto;
+        margin-bottom: 0;
     }
 
     .hero-content-text {
-        font-size: 3.5em;
-        letter-spacing: 30px;
-        line-height: 2.2em;
-        
+        letter-spacing: normal;
+        font-size: 3em;
     }
-
-    #hero-button-btn {
-        margin: 0;
-        padding: 0;
-
-    }
-
     .profile {
         display: flex;
         flex-direction: column;
@@ -228,16 +197,119 @@
     }
     .profile-text-p {
         font-size: 3.5rem;
-        letter-spacing: 4px;
+        letter-spacing: 2px;
+        line-height: normal;
+    }
+    .profile-text-content {
+        max-height: 200px;
+        /* Adjust this value to control how much text is initially visible */
+        overflow: hidden;
+        position: relative;
+        /* Required for the gradient overlay */
+        transition: max-height 0.3s ease-out;
+        /* Smooth transition for expand/collapse */
     }
 
+    .profile-text-content.expanded {
+        max-height: none;
+        /* When 'expanded' class is added, show full text */
+        overflow: visible;
+        /* Ensure all content is visible */
+    }
+
+    /* Gradient overlay to indicate text is cut off */
+    .profile-text-content::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        /* Height of the fade effect at the bottom */
+        /* Make sure the gradient color matches your background color */
+        background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        pointer-events: none;
+        /* Allows text selection/clicks through the overlay */
+        transition: opacity 0.3s ease-out;
+        /* Smooth fade in/out of the gradient */
+    }
+    /* Hide the fade effect when the content is expanded */
+    .profile-text-content.expanded::after {
+        opacity: 0;
+        /* Make gradient disappear */
+        display: none;
+        /* Also hide it to prevent potential layout issues */
+    }
+
+    /* Style for the toggle button */
+    .read-more-toggle {
+        display: block;
+        /* Ensure it's block within this media query */
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        /* Space between text and button */
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
     .profile-avatar {
         align-self: center;
     }
 
+    .product-feature-img {
+        width: 100%;
+        /* Make image take full width of its container */
+        height: 200px;
+        /* Set a fixed height for the rectangular image (adjust as needed) */
+        border-radius: 0 !important;
+        /* Override rounded-circle to make it rectangular */
+        margin-left: 0;
+        /* Reset auto margin to ensure it hugs the left edge if needed */
+        margin-right: 0;
+        /* Reset auto margin */
+    }
+
+    .card-description-content {
+        max-height: 50px;
+        overflow: hidden;
+        position: relative;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .card-description-content.expanded {
+        max-height: none;
+        overflow: visible;
+    }
+
+    .card-description-content::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        pointer-events: none;
+        transition: opacity 0.3s ease-out;
+    }
+
+    .card-description-content.expanded::after {
+        opacity: 0;
+        display: none;
+    }
+
+    .card-read-more-toggle {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
 }
 
-@media (max-width: 576px) {
+/* @media (max-width: 576px) {
     .container-main {
         max-width: 100%;
         margin: 0 auto;
@@ -289,6 +361,52 @@
 
     .profile-text-p {
         font-size: 2.5rem;
-        letter-spacing: 4px;
+        letter-spacing: 2px;
+        line-height: normal;
     }
-}
+
+    .profile-text-content {
+        max-height: 200px;
+        overflow: hidden;
+        position: relative;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .profile-text-content.expanded {
+        max-height: none;
+        overflow: visible;
+    }
+
+    .profile-text-content::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        pointer-events: none;
+        transition: opacity 0.3s ease-out;
+    }
+
+    .profile-text-content.expanded::after {
+        opacity: 0;
+        display: none;
+    }
+
+    .read-more-toggle {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .product-feature-img {
+        width: 100%;
+        height: 200px;
+        border-radius: 0 !important;
+        margin-left: 0;
+    }
+} */

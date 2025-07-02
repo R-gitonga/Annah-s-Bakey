@@ -5,10 +5,10 @@
 {% block content %}
 <div class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-content-text">FRESHLY</h1>
-        <h1 class="hero-content-text">BAKED</h1>
-        <h1 class="hero-content-text">GOODNESS</h1>
-        <h1 class="hero-content-text">EVERYDAY</h1>
+        <h1 class="text-center hero-content-text">FRESHLY</h1>
+        <h1 class="text-center hero-content-text">BAKED</h1>
+        <h1 class="text-center hero-content-text">GOODNESS</h1>
+        <h1 class="text-center hero-content-text">EVERYDAY</h1>
     </div>
     <div class="hero-button">
         <a href="#featured-products" class="btn btn-primary" id="hero-button-btn">
@@ -17,17 +17,28 @@
         </div>
 </div>
 <div class="profile-section">
-    <div class="container shadow-lg m-2 p-2 d-block profile-title">
-        <h4 class="display-6">About Annah</h4>
+    <div class="container-fluid shadow-lg d-block profile-title">
+        <h4 class="display-6 my-4">About Annah</h4>
     </div>
-    <div class="container m-2 p-2 gap-5 profile">
-        <div class="container m-2 py-2 profile-avatar">
+    <div class="container-fluid p-0 gap-5 profile">
+        <div class="m-0 p-0 profile-avatar">
             <img class="
             shadow rounded-circle" id="img-avatar" src="{{ url_for('static', filename='images/profile-img.jpg') }}" alt="Annah Mwanzia Nduku">
         </div>
-        <div class="container p-1 profile-text">
-            <p class="m-2 p-1 fs-4 fw-normal letter-spacing-4px lh-base rounded shadow-lg profile-text-p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium hic facere ad ut dignissimos, rem, nesciunt possimus sequi, sed consequuntur iure provident! Incidunt a hic sunt rem, dolore asperiores. Porro tempore totam blanditiis incidunt at rerum ipsum accusantium voluptatem eum dignissimos veritatis deserunt nam sapiente, ipsa magnam neque necessitatibus esse dolore, excepturi ex eligendi. Impedit, fugiat! Atque necessitatibus ullam ex provident doloremque maxime illo quis ipsam est placeat facilis nulla nesciunt sit eaque, sunt modi asperiores odit quidem dignissimos reiciendis suscipit tenetur saepe quae magni. Vero placeat amet mollitia nam sint aut beatae pariatur vitae, doloremque soluta necessitatibus tempore voluptate!
-            </p>
+        <div class="container-fluid p-1 profile-text">
+            <div class="profile-text-content">
+                <p class="m-0 fs-4 fw-normal letter-spacing-4px lh-base rounded shadow-lg profile-text-p">Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit. Laudantium hic facere ad ut dignissimos, rem, nesciunt possimus sequi, sed
+                    consequuntur iure provident! Incidunt a hic sunt rem, dolore asperiores. Porro tempore totam blanditiis incidunt at
+                    rerum ipsum accusantium voluptatem eum dignissimos veritatis deserunt nam sapiente, ipsa magnam neque necessitatibus
+                    esse dolore, excepturi ex eligendi. Impedit, fugiat! Atque necessitatibus ullam ex provident doloremque maxime illo
+                    quis ipsam est placeat facilis nulla nesciunt sit eaque, sunt modi asperiores odit quidem dignissimos reiciendis
+                    suscipit tenetur saepe quae magni. Vero placeat amet mollitia nam sint aut beatae pariatur vitae, doloremque soluta
+                    necessitatibus tempore voluptate!
+                </p>
+            </div>
+            {# TOGGLE BUTTON - hidden on extra-small, medium, and large screens. Only visible on 'sm' (576px-767.98px) #}
+            <button class="btn btn-link read-more-toggle d-sm-block d-md-none">Read More</button>
         </div>
     </div>
 </div>
@@ -40,16 +51,73 @@
             <div class="card h-100 shadow-sm">
                 <img class="card-img-top" src="{{ url_for('static', filename=product['image_url']) }}"
                     alt="{{ product['product_name'] }}">
-                <div class="card-body text-justify">
+                <div class="card-body text-justify shadow">
                     <h5 class="card-title">{{ product['product_name'] }}</h5>
                     <p class="card-text">{{ product['product_description'] }}</p>
                     <p class="card-text"><strong>KES {{ product['price'] }}</strong></p>
-                    <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
         </div>
+</div>
+
+<div class="container-fluid">
+    <h1 class="text-justify display-6 mx-2 my-4">Why Choose Us?</h1>
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 rounded-top-4">
+                <img src="{{ url_for('static', filename='images/fresh_ingredients.jpg') }}" alt="Fresh Ingredients" class="card-img-top rounded-circle product-feature-img">
+                <div class="card-body text-justify shadow">
+                    <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Fresh Ingredients</h5>
+                    <div class="card-description-content">
+                        <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis maxime, esse amet minus unde suscipit non iusto corporis ex numquam molestias, a assumenda sapiente ut.
+                        </p>
+                    </div>
+                    <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 rounded-top-4">
+                <img src="{{ url_for('static', filename='images/hero-section-img.jpg') }}" alt="Fresh Ingredients"
+                    class="card-img-top rounded-circle product-feature-img">
+                <div class="card-body text-justify shadow">
+                    <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Family Recipe</h5>
+                    <div class="card-description-content">
+                        <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem ipsum dolor sit amet consectetur
+                            adipisicing elit. Nobis deleniti porro ipsam corrupti nisi recusandae! Deleniti nihil iusto quos asperiores ratione,
+                            ad ipsam amet incidunt quo magnam recusandae adipisci esse!
+                        </p>
+                    </div>
+                    <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 rounded-top-4">
+                <img src="{{ url_for('static', filename='images/fast_delivery.jpg') }}" alt="Fresh Ingredients"
+                    class="card-img-top rounded-circle product-feature-img">
+
+                <div class="card-body text-justify shadow">
+                    <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Fast Delivery</h5>
+                    <div class="card-description-content">
+                        <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem, ipsum dolor sit amet
+                            consectetur adipisicing elit. Corrupti magni modi hic veniam repellendus obcaecati nihil sapiente consectetur
+                            expedita quidem.
+                        </p>
+                    </div>
+                    <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 </div>
 
 
