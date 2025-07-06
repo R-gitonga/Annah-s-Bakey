@@ -45,7 +45,14 @@
 
 <div class="container-fluid" id="featured-products">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-6 m-0">Featured Products</h1>
+         <h1 class="display-6 m-0">
+            {% if selected_category and selected_category != "All Categories" %}
+                {{ selected_category }} Products
+            {% else %}
+                Featured Products {# Default text when no specific category is selected #}
+            {% endif %}
+        </h1>
+        <!-- <h1 class="display-6 m-0">featured products</h1> -->
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 {% if selected_category and selected_category != "All Category" %}
@@ -56,50 +63,21 @@
             </button>
             <ul class="dropdown-menu" aria-label="categoryDropdown">
                 <li>
-                    <a href="{{ url_for('index', category=category) }}"
-                        class="dropdown-item {% if selected_category == category %}active{% endif %}">{{ category }}</a>
+                    <a href="#" data-category="All Categories" class="dropdown-item category-filter-item {% if not selected_cateory or selected_category == 'All Categories' %}active{% endif %}">All Categories</a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
-                {% for category in categories %}
-                <li>
-                    <a href="{{ url_for('index', category=category) }}" class="dropdown-item {% if selected_category == category %}active{% endif %}">{{ category}} </a>
-                </li>
-                {% endfor %}
+                <!-- loop through sqlite3.Row objects for categories -->
+                 {% for category_row in categories %}
+                 <li>
+                    <a href="#" data-category="{{ category_row['category_name']}}" class="dropdown-item category-filter-item {% if selected_category == category_row['category_name'] %}active{% endif %}">{{ category_row['category_name'] }}</a>
+                 </li>
+                 {% endfor %}
             </ul>
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        {% for product in products %}
-        <div class="col">
-            <div class="card h-100 rounded-top-4">
-                {# Ensure your image path is correct, assuming 'images/' in static folder #}
-                <img src="{{ url_for('static', filename='images/' + product.image) }}" class="card-img-top product-img"
-                    alt="{{ product.name }}">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description }}</p>
-                    <p class="card-text text-muted"><small>Category: {{ product.category }}</small></p> {# Display category on
-                    card #}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        <!-- {% for product in products %}
-        <div class="col">
-            <div class="card h-100 shadow-sm">
-                <img class="card-img-top" src="{{ url_for('static', filename=product['image_url']) }}"
-                    alt="{{ product['product_name'] }}">
-                <div class="card-body text-justify shadow">
-                    <h5 class="card-title">{{ product['product_name'] }}</h5>
-                    <p class="card-text">{{ product['product_description'] }}</p>
-                    <p class="card-text"><strong>KES {{ product['price'] }}</strong></p>
-                    <div class="d-flex justify-content-center">
-                        <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %} -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="product-cards-container">
+       <!-- { Include partial here. Replaced by AJAX later} -->
+        {% include '_product_cards.html' %}
         </div>
 </div>
 

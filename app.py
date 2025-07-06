@@ -1,29 +1,18 @@
-from flask import Flask, g, render_template, request
+from flask import Flask, g, render_template, request, jsonify
 import sqlite3
 import os
 
 
 app = Flask(__name__)
 
-products_data = [
-    {"id": 1, "name": "Classic Chocolate Cake", "category": "Cakes", "image": "chocolate_cake.jpg", "description": "Rich, moist, and decadent classic chocolate cake."},
-    {"id": 2, "name": "Strawberry Delight Cake", "category": "Cakes", "image": "strawberry_cake.jpg", "description": "Light sponge cake layered with fresh strawberries."},
-    {"id": 3, "name": "Apple Crumble Pie", "category": "Pies", "image": "apple_pie.jpg", "description": "Warm apple filling with a buttery, crispy oat crumble."},
-    {"id": 4, "name": "Blueberry Muffins", "category": "Muffins & Pastries", "image": "blueberry_muffin.jpg", "description": "Fluffy muffins bursting with sweet blueberries."},
-    {"id": 5, "name": "Buttery Croissant", "category": "Muffins & Pastries", "image": "croissant.jpg", "description": "Authentic, flaky, and buttery French croissant."},
-    {"id": 6, "name": "Tangy Lemon Tart", "category": "Tarts", "image": "lemon_tart.jpg", "description": "A zesty lemon filling in a delicate shortbread crust."},
-    {"id": 7, "name": "Red Velvet Cupcake", "category": "Cupcakes", "image": "red_velvet.jpg", "description": "Moist red velvet with a luscious cream cheese frosting."},
-    {"id": 8, "name": "Vanilla Bean Cupcake", "category": "Cupcakes", "image": "vanilla_cupcake.jpg", "description": "Simple yet elegant vanilla cupcake with vanilla bean frosting."},
-    {"id": 9, "name": "Chocolate Chip Cookies", "category": "Cookies", "image": "chocolate_chip_cookies.jpg", "description": "Chewy, golden brown cookies loaded with chocolate chips."},
-    {"id": 10, "name": "Oatmeal Raisin Cookies", "category": "Cookies", "image": "oatmeal_raisin_cookies.jpg", "description": "Hearty oatmeal cookies with plump raisins and spices."}
-]
+
 
 DATABASE = os.path.join(os.path.dirname(__file__), 'data', 'bakery.db')
 
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(DATABASE)
-        g.db.row_factory = sqlite3.Row
+        g.db.row_factory = sqlite3.Row    #allows you to access columns by name
     return g.db
 
 @app.teardown_appcontext
@@ -39,19 +28,90 @@ def close_db(exception=None):
 #     products = db.execute('SELECT * FROM product WHERE is_available = 1').fetchall()
 
 def index():
-    selected_category = request.args.get('category')
+    db = get_db()
 
-    if selected_category and selected_category != 'All Category':
-        filtered_products = [p for p in products_data if p['category'] == selected_category]
-    else:
-        filtered_products = products_data
+    selected_category_name = request.args.get('category')
 
-    unique_categories = sorted(list(set(p['category'] for p in products_data)))
+    # 1. get all categories for dropdon menu
+    #query the category table
+
+    categories_cursor = db.execute('SELECT category_id, category_name FROM category ORDER BY category_name')
+    all_categories = categories_cursor.fetchall() #fetches rows, accesible as dictionaries
+
+    # 2. Build the query for products
+
+    # need to join product and category tabe=les to get the category name for display
+    # and filter by category ID if category is selected
+
+    product_query = """
+            SELECT
+                p.product_id,
+                p.product_name,
+                p.product_description,
+                p.price,
+                p.image_url,
+                c.category_name AS `Category Name`,
+                p.is_available
+            FROM
+                product p
+            JOIN
+                category c ON p.category_id = c.category_id
+            WHERE
+                p.is_available == 1
+    """
+    query_params = []
+
+    if selected_category_name and selected_category_name != "All Categories":
+        #if a specific category is selected add to where clause
+        product_query += " AND c.category_name = ?"
+        query_params.append(selected_category_name)
+
+    product_query += " ORDER BY p.product_name" #order products for consistent display
 
 
+    products_cursor = db.execute(product_query, query_params)
+    filtered_products = products_cursor.fetchall()
 
-    return render_template('index.html', products=filtered_products, categories=unique_categories, selected_category=selected_category)
+    return render_template('index.html', 
+                           products=filtered_products,
+                           categories=all_categories,
+                           selected_category=selected_category_name)
 
+# AJAX endpoint for filtering
+@app.route('/filter_products', methods=['GET'])
+def filter_products_ajax():
+    db = get_db()
+    selected_category_name = request.args.get('category')
+
+    product_query = """
+            SELECT
+                p.product_id,
+                p.product_name,
+                p.product_description,
+                p.price,
+                p.image_url,
+                c.category_name AS category_name,
+                p.is_available
+            FROM
+                product p
+            JOIN
+                category c ON p.category_id = c.category_id
+            WHERE
+                p.is_available == 1
+    """
+    query_params = []
+    if selected_category_name and selected_category_name != "All Categories":
+        product_query += " AND c.category_name = ?"
+        query_params.append(selected_category_name)
+
+    product_query += " ORDER BY p.product_name"
+
+    products_cursor = db.execute(product_query, query_params)
+    filtered_products = products_cursor.fetchall()
+
+    #Render only the product cards HTML snippet
+
+    return render_template('_product_cards.html', products=filtered_products)
 
 
 if __name__ == '__main__':

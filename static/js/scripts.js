@@ -34,4 +34,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+
+    const categoryDropdownButton = document.getElementById('categoryDropdown');
+    const categoryFilterItems = document.querySelectorAll('.category-filter-item');
+    const productCardsContainer = document.getElementById('product-cards-container');
+
+    if (categoryFilterItems.length > 0 && productCardsContainer) {
+        categoryFilterItems.forEach(item => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault(); //prevent the default link behavior(page refresh)
+
+                const selectedCategory = this.dataset.category; //get category from data-category attribute
+
+
+                //update the dropdown button text
+                categoryDropdownButton.textContent = selectedCategory;
+
+                //remove 'active' class from all items and add to the clicked one
+
+                categoryFilterItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+
+                //make an AJAX request to new endpoint
+                fetch(`/filter_products?category=${encodeURIComponent(selectedCategory)}`)
+                .then(Response => {
+                    if (!Response.ok) {
+                        throw new Error(`HTTP error! status: ${Response.status}`);
+                    }
+                    return Response.text(); //get the HTML response
+                })
+                .then(html => {
+                    //replace content of the product cards container
+                    productCardsContainer.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                });
+            });
+        });
+    }
 });
