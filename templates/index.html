@@ -45,7 +45,7 @@
 
 <div class="container-fluid" id="featured-products">
     <div class="d-flex justify-content-between align-items-center mb-4">
-         <h1 class="display-6 m-0">
+         <h1 class="featured_products display-6 m-0">
             {% if selected_category and selected_category != "All Categories" %}
                 {{ selected_category }} Products
             {% else %}
@@ -63,7 +63,7 @@
             </button>
             <ul class="dropdown-menu" aria-label="categoryDropdown">
                 <li>
-                    <a href="#" data-category="All Categories" class="dropdown-item category-filter-item {% if not selected_cateory or selected_category == 'All Categories' %}active{% endif %}">All Categories</a>
+                    <a href="#" data-category="All Categories" class="dropdown-item category-filter-item {% if not selected_cateory or selected_category == 'All Categories' %}active{% endif %}">All Categories </a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <!-- loop through sqlite3.Row objects for categories -->

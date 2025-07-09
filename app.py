@@ -46,11 +46,11 @@ def index():
     product_query = """
             SELECT
                 p.product_id,
-                p.product_name,
-                p.product_description,
-                p.price,
-                p.image_url,
-                c.category_name AS `Category Name`,
+                p.product_name AS product_name,
+                p.product_description AS product_description,
+                p.price AS price,
+                p.image_url AS image_url,
+                c.category_name AS category_name,
                 p.is_available
             FROM
                 product p
@@ -86,10 +86,10 @@ def filter_products_ajax():
     product_query = """
             SELECT
                 p.product_id,
-                p.product_name,
-                p.product_description,
-                p.price,
-                p.image_url,
+                p.product_name AS product_name,
+                p.product_description AS product_description,
+                p.price AS price,
+                p.image_url AS image_url,
                 c.category_name AS category_name,
                 p.is_available
             FROM
@@ -112,6 +112,35 @@ def filter_products_ajax():
     #Render only the product cards HTML snippet
 
     return render_template('_product_cards.html', products=filtered_products)
+
+#view products route
+@app.route('/product/<int:product_id>')
+def product_detail(product_id):
+    db = get_db()
+
+    #query database for specific product and its category name
+    product_query = """
+                SELECT 
+                    p.product_id,
+                    p.product_name AS product_name,
+                    p.product_description AS product_description,
+                    p.image_url AS image_url,
+                    p.price AS price,
+                    c.category_name AS category_name
+                FROM 
+                    product p
+                JOIN 
+                    category c on p.category_id = c.category_id
+                WHERE 
+                    p.product_id = ? AND p.is_available = 1
+        """
+    product_cursor = db.execute(product_query, (product_id,))
+
+    product = product_cursor.fetchone()
+    if product is None:
+        #case wwhere there are no products
+        return render_template('404.html'), 404 #will need to create 404.html
+    return render_template('product_detail.html', product=product)
 
 
 if __name__ == '__main__':
