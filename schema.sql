@@ -16,6 +16,16 @@ CREATE TABLE IF NOT EXISTS product(
     FOREIGN KEY (category_id) REFERENCES category(category_id)
 );
 
+CREATE TABLE IF NOT EXISTS testimonials(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    customer_name TEXT NOT NULL,
+    customer_location TEXT,
+    testimonial_text TEXT NOT NULL,
+    rating INTEGER,
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_approved BOOLEAN DEFAULT 0
+);
 
 
 -- INSERT INTO product(product_name, product_description, price, image_url, category_id, is_available) VALUES

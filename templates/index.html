@@ -45,13 +45,14 @@
 
 <div class="container-fluid" id="featured-products">
     <div class="d-flex justify-content-between align-items-center mb-4">
-         <h1 class="featured_products display-6 m-0">
-            {% if selected_category and selected_category != "All Categories" %}
-                {{ selected_category }} Products
-            {% else %}
-                Featured Products {# Default text when no specific category is selected #}
-            {% endif %}
-        </h1>
+         
+        {% if selected_category and selected_category != "All Categories" %}
+        <p>DEBUG: {{ selected_category }}</p>
+        <h1 class="featured_products display-6 m-0">{{ selected_category }} Products</h1>
+        {% else %}
+        <h1 class="featured_products display-6 m-0">Featured Products</h1>
+        {% endif %}
+       
         <!-- <h1 class="display-6 m-0">featured products</h1> -->
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -81,59 +82,116 @@
         </div>
 </div>
 
-<div class="container-fluid">
-    <h1 class="text-justify display-6 mx-2 my-4">Why Choose Us?</h1>
-    <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100 rounded-top-4">
-                <img src="{{ url_for('static', filename='images/fresh_ingredients.jpg') }}" alt="Fresh Ingredients" class="card-img-top rounded-circle product-feature-img">
-                <div class="card-body text-justify shadow">
-                    <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Fresh Ingredients</h5>
-                    <div class="card-description-content">
-                        <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis maxime, esse amet minus unde suscipit non iusto corporis ex numquam molestias, a assumenda sapiente ut.
-                        </p>
-                    </div>
-                    <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid my-5">
+    <ul class="nav nav-pills nav-justified mb-4" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="why-choose-us-tab" data-bs-toggle="pill" data-bs-target="#why-choose-us-content" type="button" role="tab" aria-controls="why-choose-us-content" aria-selected="true">Why Choose Us?</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="testimonials-tab" data-bs-toggle="pill" data-bs-target="#testimonials-content" type="button" role="tab" aria-controls="testimonials-content" aria-selected="false">Testimonials</button>
+        </li>
+    </ul>
 
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100 rounded-top-4">
-                <img src="{{ url_for('static', filename='images/hero-section-img.jpg') }}" alt="Fresh Ingredients"
-                    class="card-img-top rounded-circle product-feature-img">
-                <div class="card-body text-justify shadow">
-                    <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Family Recipe</h5>
-                    <div class="card-description-content">
-                        <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem ipsum dolor sit amet consectetur
-                            adipisicing elit. Nobis deleniti porro ipsam corrupti nisi recusandae! Deleniti nihil iusto quos asperiores ratione,
-                            ad ipsam amet incidunt quo magnam recusandae adipisci esse!
-                        </p>
+    <!-- Tab Content -->
+     <div class="tab-content" id="myTabContent">
+        <!-- why choose us pane -->
+         <div class="tab-pane fade show active" id="why-choose-us-content" role="tabpanel" aria-labelledby="why-choose-us-tab">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100 rounded-top-4">
+                        <img src="{{ url_for('static', filename='images/fresh_ingredients.jpg') }}" alt="Fresh Ingredients"
+                            class="card-img-top rounded-circle product-feature-img">
+                        <div class="card-body text-justify shadow">
+                            <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Fresh Ingredients
+                            </h5>
+                            <div class="card-description-content">
+                                <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem ipsum dolor,
+                                    sit amet consectetur adipisicing elit. Officiis maxime, esse amet minus unde suscipit non iusto
+                                    corporis ex numquam molestias, a assumenda sapiente ut.
+                                </p>
+                            </div>
+                            <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
+                        </div>
                     </div>
-                    <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100 rounded-top-4">
-                <img src="{{ url_for('static', filename='images/fast_delivery.jpg') }}" alt="Fresh Ingredients"
-                    class="card-img-top rounded-circle product-feature-img">
-
-                <div class="card-body text-justify shadow">
-                    <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Fast Delivery</h5>
-                    <div class="card-description-content">
-                        <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem, ipsum dolor sit amet
-                            consectetur adipisicing elit. Corrupti magni modi hic veniam repellendus obcaecati nihil sapiente consectetur
-                            expedita quidem.
-                        </p>
+            
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100 rounded-top-4">
+                        <img src="{{ url_for('static', filename='images/hero-section-img.jpg') }}" alt="Fresh Ingredients"
+                            class="card-img-top rounded-circle product-feature-img">
+                        <div class="card-body text-justify shadow">
+                            <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Family Recipe</h5>
+                            <div class="card-description-content">
+                                <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem ipsum dolor
+                                    sit amet consectetur
+                                    adipisicing elit. Nobis deleniti porro ipsam corrupti nisi recusandae! Deleniti nihil iusto quos
+                                    asperiores ratione,
+                                    ad ipsam amet incidunt quo magnam recusandae adipisci esse!
+                                </p>
+                            </div>
+                            <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
+                        </div>
                     </div>
-                    <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
                 </div>
+            
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100 rounded-top-4">
+                        <img src="{{ url_for('static', filename='images/fast_delivery.jpg') }}" alt="Fresh Ingredients"
+                            class="card-img-top rounded-circle product-feature-img">
+            
+                        <div class="card-body text-justify shadow">
+                            <h5 class="card-title text-center fs-4 fw-bold shadow-sm letter-spacing-5px lh-base">Fast Delivery</h5>
+                            <div class="card-description-content">
+                                <p class="card-text shadow-lg letter-spacing-2px lh-sm fs-5 fw-light why-us-text">Lorem, ipsum dolor
+                                    sit amet
+                                    consectetur adipisicing elit. Corrupti magni modi hic veniam repellendus obcaecati nihil
+                                    sapiente consectetur
+                                    expedita quidem.
+                                </p>
+                            </div>
+                            <button class="btn btn-link card-read-more-toggle d-sm-block d-md-none">Read More</button>
+                        </div>
+                    </div>
+                </div>  
             </div>
-        </div>
+         </div>
+
+        <!-- Testimonials Tab Pane -->
+        <div class="tab-pane fade display-6" id="testimonials-content" role="tabpanel" aria-labelledby="testimonials-tab">
+            <h2 class="text-center my-4">What Our Customers Say!</h2>
+            <div class="row justify-content-center">
+                <!-- Placeholder for testimonials content -->
+                <div class="col-md-8">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis molestias cumque
+                                assumenda quasi quos cum perspiciatis dolore vel nesciunt odio.</p>
+                            <footer class="blockqoute-footer">Jane Doe from <cite title="Source Title">Customer</cite></footer>
+                        </div>
+                    </div>
         
-    </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis molestias cumque
+                                assumenda
+                                quasi quos cum perspiciatis dolore vel nesciunt odio.</p>
+                            <footer class="blockqoute-footer">John Smith from <cite title="Source Title">Another Happy
+                                    Customer</cite></footer>
+                        </div>
+                    </div>
+        
+                    <!-- More dynamic testimonials go here -->
+        
+                </div>
+            </div>
+        </div>
+
+     </div>
+    <!-- <h1 class="text-justify display-6 mx-2 my-4">Why Choose Us?</h1> -->
+
+    
+
+    
 </div>
 
 

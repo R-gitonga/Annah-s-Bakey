@@ -168,6 +168,13 @@ body {
     #navigation {
         max-width: 100%;
     }
+    .brand-name {
+        font-size: 64px
+    }
+    .menu-bar {
+        color: #67C342;
+        font-size: 64px;
+    }
 
     .profile {
         display: flex;
@@ -180,7 +187,7 @@ body {
     }
 
     .product_detail_img {
-        height: auto;
+        height: 500px;
         width: 100%;
 
     }
@@ -217,6 +224,13 @@ body {
 
     #navigation {
         max-width: 100%;
+    }
+    .brand-name {
+        font-size: 32px;
+    }
+    .menu-bar {
+        color: #67C342;
+        font-size: 32px;
     }
     .hero-section {
         height: auto;
@@ -356,7 +370,7 @@ body {
     }
 
     .product_detail_img {
-        height: auto;
+        height: 400px;
         width: 100%;  
 
     }
