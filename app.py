@@ -5,7 +5,9 @@ import os
 
 app = Flask(__name__)
 #generate a random 24-byte key 
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'your_default_dev_key'
+# The 'or' part is a fallback for local development if SECRET_KEY isn't set as an env var there.
+# In production on Render, os.environ.get('SECRET_KEY') will be used.
 
 
 
@@ -199,4 +201,4 @@ def product_detail(product_id):
 
 
 # if __name__ == '__main__':
-app.run(debug=True)
+# app.run(debug=True)
