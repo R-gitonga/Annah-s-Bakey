@@ -85,17 +85,17 @@
 <div class="container-fluid my-5">
     <ul class="nav nav-pills nav-justified mb-4" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="why-choose-us-tab" data-bs-toggle="pill" data-bs-target="#why-choose-us-content" type="button" role="tab" aria-controls="why-choose-us-content" aria-selected="true">Why Choose Us?</button>
+            <button class="nav-link" id="why-choose-us-tab" data-bs-toggle="pill" data-bs-target="#why-choose-us-content" type="button" role="tab" aria-controls="why-choose-us-content" aria-selected="false">Why Choose Us?</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="testimonials-tab" data-bs-toggle="pill" data-bs-target="#testimonials-content" type="button" role="tab" aria-controls="testimonials-content" aria-selected="false">Testimonials</button>
+            <button class="nav-link active" id="testimonials-tab" data-bs-toggle="pill" data-bs-target="#testimonials-content" type="button" role="tab" aria-controls="testimonials-content" aria-selected="true">Testimonials</button>
         </li>
     </ul>
 
     <!-- Tab Content -->
      <div class="tab-content" id="myTabContent">
         <!-- why choose us pane -->
-         <div class="tab-pane fade show active" id="why-choose-us-content" role="tabpanel" aria-labelledby="why-choose-us-tab">
+         <div class="display-6 tab-pane fade" id="why-choose-us-content" role="tabpanel" aria-labelledby="why-choose-us-tab">
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <div class="card h-100 rounded-top-4">
@@ -157,37 +157,51 @@
          </div>
 
         <!-- Testimonials Tab Pane -->
-        <div class="tab-pane fade display-6" id="testimonials-content" role="tabpanel" aria-labelledby="testimonials-tab">
+        <div class="tab-pane fade display-6 show active" id="testimonials-content" role="tabpanel" aria-labelledby="testimonials-tab">
             <h2 class="text-center my-4">What Our Customers Say!</h2>
+            <!-- Testimonial button -->
+            <div class="text-center mb-4">
+                <a href="{{ url_for('add_testimonial') }}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i>Add Your Testimony
+                </a>
+            </div>
+
             <div class="row justify-content-center">
                 <!-- Placeholder for testimonials content -->
                 <div class="col-md-8">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis molestias cumque
-                                assumenda quasi quos cum perspiciatis dolore vel nesciunt odio.</p>
-                            <footer class="blockqoute-footer">Jane Doe from <cite title="Source Title">Customer</cite></footer>
+                    <div class="border p-3 rounded shadow-sm" id="scrollableTestimonials">
+                        {% for testimonial_row in testimonials %}
+                        <div class="card mb-3">
+                            {% if testimonial_row['image_url'] %}
+                            <img src="{{ url_for('static', filename='images/customers/' + testimonial_row['image_url'])}}" alt="{{ testimonial_row['customer_name'] }}'s photo" class="rounded-circle mx-auto mb-3 d-block" style="width: 90px; height: 90px; object-fit: cover;">
+                            {% endif %}
+                            <p class="card-text text-center fs-5 fw-light fst-italic mb-3">"{{ testimonial_row['testimonial_text']}}"</p>
+                            <footer class="blockqoute-footer mt-auto">
+                                <strong>{{ testimonial_row['customer_name'] }}</strong>
+                                {% if testimonial_row['customer_location'] %}
+                                from <cite title="Source Title">{{ testimonial_row['customer_location'] }}</cite>
+                                {% endif %}
+                                {% if testimonial_row['rating'] %}
+                                <div class="text-warning mt-2">
+                                    {% for _ in range(testimonial_row['rating']) %}
+                                        <i class="fas fa-star"></i>
+                                    {% endfor %}
+                                    {% for _ in range(5 - testimonial_row['rating']) %}
+                                        <i class="far fa-star"></i>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
+                            </footer>
                         </div>
+                        {% endfor %}
                     </div>
-        
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis molestias cumque
-                                assumenda
-                                quasi quos cum perspiciatis dolore vel nesciunt odio.</p>
-                            <footer class="blockqoute-footer">John Smith from <cite title="Source Title">Another Happy
-                                    Customer</cite></footer>
-                        </div>
-                    </div>
-        
-                    <!-- More dynamic testimonials go here -->
-        
+                        
                 </div>
             </div>
         </div>
 
      </div>
-    <!-- <h1 class="text-justify display-6 mx-2 my-4">Why Choose Us?</h1> -->
 
     
 

@@ -1,9 +1,11 @@
-from flask import Flask, g, render_template, request, jsonify
+from flask import Flask, g, render_template, request, jsonify, flash, redirect, url_for
 import sqlite3
 import os
 
 
 app = Flask(__name__)
+#generate a random 24-byte key 
+app.config['SECRET_KEY'] = os.urandom(24)
 
 
 
@@ -23,10 +25,6 @@ def close_db(exception=None):
 
 
 @app.route("/")
-# def home():
-#     db = get_db()
-#     products = db.execute('SELECT * FROM product WHERE is_available = 1').fetchall()
-
 def index():
     db = get_db()
 
@@ -72,10 +70,62 @@ def index():
     products_cursor = db.execute(product_query, query_params)
     filtered_products = products_cursor.fetchall()
 
+    testimonials_query = """
+                SELECT 
+                    t.id,
+                    t.customer_name,
+                    t.customer_location,
+                    t.testimonial_text,
+                    t.rating,
+                    t.image_url,
+                    t.is_approved
+                FROM
+                    testimonials t
+                WHERE 
+                    is_approved = 1
+                ORDER BY
+                    created_at DESC
+
+    """
+    testimonials_cursor = db.execute(testimonials_query)
+    testimonials = testimonials_cursor.fetchall()
+
+    print("Fetched testimonials:", testimonials) # This will print to your Flask terminal
+
+
     return render_template('index.html', 
                            products=filtered_products,
                            categories=all_categories,
-                           selected_category=selected_category_name)
+                           selected_category=selected_category_name,
+                           testimonials=testimonials)
+
+@app.route('/add_testimonial', methods=['GET', 'POST'])
+def add_testimonial():
+    if request.method == 'POST':
+        customer_name = request.form['customer_name']
+        customer_location = request.form.get('customer_location') #use .get for optional fields
+        testimonial_text = request.form['testimonial_text']
+        rating = request.form.get('rating')
+        image_url = request.form.get('image_url') #placeholder for image. yet to implement
+
+        #basic validation
+        if not customer_name or not testimonial_text:
+            flash('Name and Testimony are required!', 'danger')
+            return render_template('add_testimonial.html')
+        
+        try:
+            db = get_db()
+            db.execute(
+                "INSERT INTO testimonials(customer_name, customer_location, testimonial_text, rating, image_url, is_approved) VALUES (?, ?, ?, ?, ?, ?)",
+                (customer_name, customer_location, testimonial_text, rating, image_url, 0)
+            )
+            db.commit()
+            flash('Your testimony has been submitted for approval!', 'success')
+            return redirect(url_for('index', _anchor='testimonials-tab')) #redirect back to home, testimonials tab
+        except sqlite3.Error as e:
+            flash(f'An error occurred: {e}', 'danger')
+            return render_template('add_testimonials.html')
+    return render_template('add_testimonial.html')
 
 # AJAX endpoint for filtering
 @app.route('/filter_products', methods=['GET'])
@@ -141,6 +191,7 @@ def product_detail(product_id):
         #case wwhere there are no products
         return render_template('404.html'), 404 #will need to create 404.html
     return render_template('product_detail.html', product=product)
+
 
 
 if __name__ == '__main__':

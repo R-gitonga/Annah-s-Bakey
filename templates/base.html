@@ -17,9 +17,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Libertinus+Mono&family=Martel:wght@200;300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <style>
+        /* Custom CSS for fixed alerts */
+        .fixed-alerts {
+            position: fixed;
+            top: 20px;
+            /* Adjust as needed, e.g., 70px if you have a fixed navbar */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            /* Adjust width */
+            max-width: 600px;
+            /* Max width for larger screens */
+            z-index: 1050;
+            /* Higher than Bootstrap's navbars (1040) */
+        }
+    </style>
 </head>
 
 <body>
+    <div class="fixed-alerts">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
 
     <nav class="navbar navbar-expand-lg" >
         <div class="container" id="navigation">
@@ -44,6 +73,8 @@
     </nav>
 
     <main class="container container-main my-4">
+        
+
         {% block content %}{% endblock %}
     </main>
 

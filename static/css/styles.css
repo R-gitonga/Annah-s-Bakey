@@ -140,11 +140,22 @@ body {
     font-size: 2.2rem;
 }
 .product-category {
-    /* justify-self: flex-start; */
     width: max-content;
     margin-left: 25%;
     margin-right: 50%;
 }
+
+#scrollableTestimonials {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 15px;
+    margin-bottom: 20px;
+}
+
+#scrollableTestimonials .card {
+    margin-bottom: 15px;
+}
+
 @media (max-width: 1199px) {
 
     .read-more-toggle {

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Add Testimony - Annah's Bakery{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <h1 class="text-center mb-4 display-5">Share Your Experience!</h1>
+            <p class="text-center text-muted mb-4">Your feedback help us improve and grow.</p>
+<!-- 
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %} -->
+
+            <div class="card shadow p-4">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('add_testimonial') }}">
+                        <div class="mb-3">
+                            <label for="customer_name" class="form-label">Your Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customer_location" class="form-label">Your Location (optional)</label>
+                            <input type="text" class="form-control" id="customer_location" name="customer_location">
+                        </div>
+                        <div class="mb-3">
+                            <label for="testimonial_text" class="form-label">Your Testimony <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="testimonial_text" name="testimonial_text" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating (1-5 stars)</label>
+                            <select name="rating" id="rating" class="form-select">
+                                <option value="">Select a rating</option>
+                                <option value="1">1 star</option>
+                                <option value="2">2 star</option>
+                                <option value="3">3 star</option>
+                                <option value="4">4 star</option>
+                                <option value="5">5 star</option>
+                            </select>
+                        </div>
+                        <!-- skip image upload for now -->
+                         <!-- <div class="mb-3">
+                            <label for="image_url" class="form-label">Upload a photo (optional)</label>
+                            <input type="file" class="form-control" id="image_url" name="image_url">
+                         </div> -->
+                         <button class="btn btn-success w-100">Submit Testimony</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
