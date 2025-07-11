@@ -9,13 +9,17 @@ app.config['SECRET_KEY'] = os.urandom(24)
 
 
 
-DATABASE = os.path.join(os.path.dirname(__file__), 'data', 'bakery.db')
+DB_NAME = 'bakery.db'
 
 def get_db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(DATABASE)
-        g.db.row_factory = sqlite3.Row    #allows you to access columns by name
-    return g.db
+    db = getattr(g, '_database', None)  # Get the database connection from the Flask global 'g' object
+    if db is None:
+        # Use app.root_path to get the absolute path to your application's root directory
+        # Then join it with your 'data' subdirectory and the database file name
+        db_path = os.path.join(app.root_path, 'data', DB_NAME)
+        db = g._database = sqlite3.connect(db_path)
+        db.row_factory = sqlite3.Row  # allows you to access columns by name
+    return db
 
 @app.teardown_appcontext
 def close_db(exception=None):
@@ -194,5 +198,5 @@ def product_detail(product_id):
 
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+app.run(debug=True)
