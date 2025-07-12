@@ -172,7 +172,6 @@ def filter_products_ajax():
 #view products route
 @app.route('/product/<int:product_id>')
 def product_detail(product_id):
-    db = get_db()
 
     #query database for specific product and its category name
     product_query = """
