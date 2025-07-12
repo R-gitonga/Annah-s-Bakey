@@ -45,7 +45,7 @@ class Testimonial(db.Model):
     rating = db.Column(db.Integer)
     image_url = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    is_approved = db.Column(db.Boolean, default=False, nullable=False)
+    is_approved = db.Column(db.Boolean, default=True, nullable=False)
 
     def __repr__(self):
         return f'<Testimonial {self.customer_name}>'
