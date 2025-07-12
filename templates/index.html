@@ -45,13 +45,19 @@
 
 <div class="container-fluid" id="featured-products">
     <div class="d-flex justify-content-between align-items-center mb-4">
+
+        
+            <h1 id="category-title" class="featured_products display-6 m-0">Featured Products</h1>
+        
+            <!-- <h1 class="featured_products display-6 m-0"></h1> -->
+        
          
-        {% if selected_category and selected_category != "All Categories" %}
+        <!-- {% if selected_category and selected_category != "All Categories" %}
         <p>DEBUG: {{ selected_category }}</p>
         <h1 class="featured_products display-6 m-0">{{ selected_category }} Products</h1>
         {% else %}
         <h1 class="featured_products display-6 m-0">Featured Products</h1>
-        {% endif %}
+        {% endif %} -->
        
         <!-- <h1 class="display-6 m-0">featured products</h1> -->
         <div class="dropdown">
@@ -70,7 +76,7 @@
                 <!-- loop through sqlite3.Row objects for categories -->
                  {% for category_row in categories %}
                  <li>
-                    <a href="#" data-category="{{ category_row['category_name']}}" class="dropdown-item category-filter-item {% if selected_category == category_row['category_name'] %}active{% endif %}">{{ category_row.category_name }}</a>
+                    <a href="#" data-category="{{ category_row.category_name }}" class="dropdown-item category-filter-item {% if selected_category == category_row.category_name %}active{% endif %}">{{ category_row.category_name }}</a>
                  </li>
                  {% endfor %}
             </ul>
@@ -78,7 +84,7 @@
     </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="product-cards-container">
        <!-- { Include partial here. Replaced by AJAX later} -->
-        {% include '_product_cards.html' %}
+            {% include '_product_cards.html' %}
         </div>
 </div>
 

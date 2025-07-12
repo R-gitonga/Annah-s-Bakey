@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 #configuration for sqlalchemy
 # Get DATABASE_URL from environment variable or use a fallback for local development
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data/bakery.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///bakery.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #disable tracking modifications for perfomence
 #generate a random 24-byte key 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_super_secret_dev_key')
@@ -60,16 +60,22 @@ def index():
     for category in categories:
         products_by_category[category.category_name] = Product.query.filter_by(category=category, is_available=True).all()
 
+    initial_products_display = Product.query.filter_by(is_available=True).order_by(Product.name).all()
+
+
     #fetch approved testimonials
     testimonials_data = Testimonial.query.filter_by(is_approved=True).order_by(Testimonial.created_at.desc()).all()
     #might want to structure testimonials_data differently if you have groups of 3
     #for now just pass the list directly here, template will adapt slightly
     #can implement grouping logic with python here
+    selected_category = "All Categories"
 
     return render_template('index.html',
                            categories=categories,
                            products_by_category=products_by_category,
-                           testimonials=testimonials_data)
+                           testimonials=testimonials_data,
+                           products=initial_products_display,
+                           selected_category=selected_category)
    
 @app.route('/products/<int:category_id>')
 def products_by_category(category_id):

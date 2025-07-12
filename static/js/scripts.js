@@ -71,6 +71,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('Error fetching products:', error);
                 });
             });
-        });
+        }); 
     }
+
+    const categoryItems = document.querySelectorAll('.category-filter-item');
+        const categoryTitle = document.getElementById('category-title');
+
+        categoryItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const selectedCategory = this.getAttribute('data-category');
+
+                // Update the header text
+                if (selectedCategory && selectedCategory !== 'All Categories') {
+                    categoryTitle.textContent = `${selectedCategory} Products`;
+                } else {
+                    categoryTitle.textContent = 'Featured Products';
+                }
+
+                // You can also trigger the AJAX request here to fetch and update products
+            });
+        });
 });
