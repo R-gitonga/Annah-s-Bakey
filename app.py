@@ -45,7 +45,7 @@ class Testimonial(db.Model):
     rating = db.Column(db.Integer)
     image_url = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    is_approved = db.Column(db.Boolean, default=True, nullable=False)
+    is_approved = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
         return f'<Testimonial {self.customer_name}>'
@@ -111,7 +111,7 @@ def add_testimonial():
                 testimonial_text=testimonial_text,
                 rating=rating,
                 image_url=None, #image upload not implemented yet
-                is_approved=False
+                is_approved=True
             )
             db.session.add(new_testimonial)
             db.session.commit()

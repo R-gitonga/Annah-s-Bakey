@@ -45,7 +45,7 @@ def init_db_with_sqlalchemy():
             Testimonial(customer_name='Sarah Lee', customer_location='Mombasa', testimonial_text='I loved the cookies, but the bread was a bit dry.', rating=3, image_url=None, is_approved=True),
             Testimonial(customer_name='Mike Ross', customer_location='Kisumu', testimonial_text='Good quality, but a bit pricey for everyday.', rating=3, image_url=None, is_approved=True),
             Testimonial(customer_name='Rachel Zane', customer_location='Kiambu', testimonial_text='Absolutely divine! The chocolate cake was a masterpiece.', rating=5, image_url=None, is_approved=True),
-            Testimonial(customer_name='Sansa Stark', customer_location='Kiambu', testimonial_text='Absolutely divine! The Direwolf cookies were a masterpiece.', rating=5, image_url=None, is_approved=True),
+            Testimonial(customer_name='Sansa Stark', customer_location='The North', testimonial_text='Absolutely divine! The Direwolf cookies were a masterpiece.', rating=5, image_url=None, is_approved=True),
         ]
         db.session.add_all(testimonials)
         db.session.commit()
