@@ -1,4 +1,5 @@
-from app import app, db, Category, Product, Testimonial
+from app import app, db
+from models import Category, Product, Testimonial
 import os
 
 def init_db_with_sqlalchemy():
@@ -7,16 +8,7 @@ def init_db_with_sqlalchemy():
         # Optional: print debug info
         db_uri = app.config['SQLALCHEMY_DATABASE_URI']
         print(f"DB URI: {db_uri}")
-        if db_uri.startswith("sqlite:///"):
-            db_file = db_uri.replace("sqlite:///", "")
-            abs_path = os.path.abspath(db_file)
-            print(f"Resolved DB file path: {abs_path}")
-            if not os.path.exists(os.path.dirname(abs_path)):
-                print("🚨 Directory does NOT exist!")
-            else:
-                print("✅ Directory exists")
-
-        # 👇 Now safe to use SQLAlchemy
+        # Create all tables if they don't exist
         db.drop_all()
         db.create_all()
 
