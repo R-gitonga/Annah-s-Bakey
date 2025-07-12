@@ -31,7 +31,7 @@ def init_db_with_sqlalchemy():
         # insert products
         products = [
             Product(name='Chocolate Fudge Cake', description='Rich and decadent chocolate cake.', price=1500.00, image_url='chocolate_cake.jpg', is_available=True, category=cat1),
-            Product(name='Apple Pie', description='Classic apple pie with a flaky crust.', price=700.50, image_url='cupcake.jpg.jpg', is_available=True, category=cat2),
+            Product(name='Apple Pie', description='Classic apple pie with a flaky crust.', price=700.50, image_url='cupcake.jpg', is_available=True, category=cat2),
             Product(name='Condensed milk Loaf', description='Artisan condensed milk bread.', price=400.00, image_url='condensed-milk-toast.jpg', is_available=True, category=cat3),
             Product(name='Oatmeal Raisin Cookies', description='Soft and chewy oatmeal raisin cookies (pack of 6).', price=1000.00, image_url='oatmeal_cookies.jpg', is_available=True, category=cat4),
             Product(name='Vanilla Bean Cupcakes', description='Fluffy vanilla cupcakes with buttercream frosting (pack of 4).', price=1100.00, image_url='vanilla_cupcake.jpg', is_available=True, category=cat1),
