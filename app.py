@@ -1,10 +1,17 @@
+
 from flask import Flask, render_template, request, jsonify, flash, redirect, url_for
 import os
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime, timezone
 
 
 app = Flask(__name__)
 
+
+
+@app.context_processor
+def inject_now():
+    return {'now': datetime.now(timezone.utc)}
 #configuration for sqlalchemy
 # Get DATABASE_URL from environment variable or use a fallback for local development
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///bakery.db')
