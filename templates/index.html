@@ -70,7 +70,7 @@
                 <!-- loop through sqlite3.Row objects for categories -->
                  {% for category_row in categories %}
                  <li>
-                    <a href="#" data-category="{{ category_row['category_name']}}" class="dropdown-item category-filter-item {% if selected_category == category_row['category_name'] %}active{% endif %}">{{ category_row['category_name'] }}</a>
+                    <a href="#" data-category="{{ category_row['category_name']}}" class="dropdown-item category-filter-item {% if selected_category == category_row['category_name'] %}active{% endif %}">{{ category_row.category_name }}</a>
                  </li>
                  {% endfor %}
             </ul>
@@ -172,26 +172,25 @@
                     <div class="border p-3 rounded shadow-sm" id="scrollableTestimonials">
                         {% for testimonial_row in testimonials %}
                         <div class="card mb-3">
-                            {% if testimonial_row['image_url'] %}
-                            <img src="{{ url_for('static', filename='images/customers/' + testimonial_row['image_url'])}}" alt="{{ testimonial_row['customer_name'] }}'s photo" class="rounded-circle mx-auto mb-3 d-block" style="width: 90px; height: 90px; object-fit: cover;">
+                            {% if testimonial_row.image_url %}
+                                <img src="{{ url_for('static', filename='images/customers/' + testimonial_row.image_url)}}" alt="{{ testimonial_row.customer_name }}'s photo" class="rounded-circle mx-auto mb-3 d-block" style="width: 90px; height: 90px; object-fit: cover;">
                             {% endif %}
-                            <p class="card-text text-center fs-5 fw-light fst-italic mb-3">"{{ testimonial_row['testimonial_text']}}"</p>
+                            <p class="card-text text-center fs-5 fw-light fst-italic mb-3">"{{ testimonial_row.testimonial_text}}"</p>
                             <footer class="blockqoute-footer mt-auto">
-                                <strong>{{ testimonial_row['customer_name'] }}</strong>
-                                {% if testimonial_row['customer_location'] %}
-                                from <cite title="Source Title">{{ testimonial_row['customer_location'] }}</cite>
+                                <strong>{{ testimonial_row.customer_name }}</strong>
+                                {% if testimonial_row.customer_location %}
+                                    from <cite title="Source Title">{{ testimonial_row.customer_location }}</cite>
                                 {% endif %}
-                                {% if testimonial_row['rating'] %}
-                                <div class="text-warning mt-2">
-                                    {% for _ in range(testimonial_row['rating']) %}
-                                        <i class="fas fa-star"></i>
-                                    {% endfor %}
-                                    {% for _ in range(5 - testimonial_row['rating']) %}
-                                        <i class="far fa-star"></i>
-                                    {% endfor %}
-                                </div>
+                                {% if testimonial_row.rating %}
+                                    <div class="text-warning mt-2">
+                                        {% for _ in range(testimonial_row.rating) %}
+                                            <i class="fas fa-star"></i>
+                                        {% endfor %}
+                                        {% for _ in range(5 - testimonial_row.rating) %}
+                                            <i class="far fa-star"></i>
+                                        {% endfor %}
+                                    </div>
                                 {% endif %}
-
                             </footer>
                         </div>
                         {% endfor %}
