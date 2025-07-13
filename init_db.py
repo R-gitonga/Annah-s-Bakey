@@ -1,5 +1,5 @@
 from app import app, db
-from models import Category, Product, Testimonial
+from models import Category, Product, Testimonial, User
 import os
 
 def init_db_with_sqlalchemy():

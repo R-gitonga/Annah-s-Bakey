@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-5">Admin Dashboard</h2>
+    <h1>Welcome, {{ username }} </h1>
+    <p>Welcome to your Dashboard</p>
+    <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+    <ul>
+        <li><a href="/manage_orders">Manage Orders</a></li>
+        <li><a href="/manage_products">Manage Products</a></li>
+        <li><a href="/view_reports">View Reports</a></li>
+    </ul>
+</div>
+{% endblock %}

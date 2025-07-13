@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, jsonify, flash, redirect, url_for
+from flask import Flask, render_template, request, jsonify, flash, redirect, url_for, session
 import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 
 # import database models
 
-from models import Category, Product, Testimonial
+from models import Category, Product, Testimonial, User
 
 
 @app.route("/")
@@ -138,3 +138,64 @@ def product_detail(product_id):
     
     return render_template('product_detail.html', product=product)
 
+@app.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if "username" in session:
+        return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Implement your authentication logic here
+        if username == 'admin' and password == 'password':
+            flash('Login successful!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid credentials. Please try again.', 'danger')
+    return render_template('admin_login.html')
+
+# login
+@app.route("/login", methods=['POST'])
+def login():
+    # collect info from form
+    username = request.form['username']
+    password = request.form['password']
+
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        session['username'] = username
+        return redirect(url_for('dashboard'))
+    return render_template("index.html")
+
+
+# Register
+@app.route("/register", methods=['POST'])
+def register():
+    username = request.form['username']
+    password = request.form['password']
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return render_template("index.html", error="user already here")
+    else:
+        new_user = User(username=username)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+        # create a new session for user
+        session['username'] = username
+        return redirect(url_for('dashboard'))
+
+
+# Dashbooard
+@app.route("/dashboard")
+def dashboard():
+    if "username" in session:
+        return render_template("dashboard.html", username = session['username'])
+    return redirect(url_for('index'))
+
+
+
+# logout
+@app.route("/logout")
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('admin_login'))

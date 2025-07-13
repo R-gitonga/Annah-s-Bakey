@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-5">Admin Login</h2>
+    <form method="POST" action="{{ url_for('admin_login') }}" id="auth-form">
+        <div class="mb-3">
+            <label for="username" class="form-label" style="font-family: 'Martel', 'Dancing Script';">Username <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label f" style="font-family: 'Martel', 'Dancing Script';">Password<span class="text-danger">*</span></label>
+            <input type="passowrd" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-success w-100 btn-login" onclick="setActionForm('login')">Login</button>
+        <button type="submit" class="btn btn-success w-100 btn-login" onclick="setActionForm('register')">Register</button>
+
+    </form>
+</div>
+
+<script>
+    function setActionForm(action) {
+        let form = document.getElementById('auth-form');
+        if (action === 'login') {
+            form.action = "{{ url_for('login') }}";
+            form.method = 'post';
+            form.submit();
+        } else if (action === 'register') {
+            form.action = "{{ url_for('register') }}";
+            form.method = 'post';
+            form.submit();
+        }
+    }
+</script>
+{% endblock %}
