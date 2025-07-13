@@ -1,16 +1,59 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="mt-5">Admin Dashboard</h2>
-    <h1>Welcome, {{ username }} </h1>
-    <p>Welcome to your Dashboard</p>
-    <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
-    <ul>
-        <li><a href="/manage_orders">Manage Orders</a></li>
-        <li><a href="/manage_products">Manage Products</a></li>
-        <li><a href="/view_reports">View Reports</a></li>
-    </ul>
+<div class="container-fluid mt-4">
+    <div class="container text-center">
+        <!-- <h1>Welcome, {{ username }} to Admin Dashboard</h1> -->
+        <div class="row">
+            <!-- Sidebar navigation -->
+             <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a href="{{ url_for('dashboard') }}" class="nav-link active" aria-current="page">
+                                <i class="fas fa-home me-2"></i>Dashboard Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('admin_testimonials') }}" class="nav-link" aria-current="page">
+                                <i class="fas fa-comments me-2"></i>Manage Testimonials
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('logout') }}" class="nav-link text-danger" aria-current="page">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+             </nav>
+
+             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <h2 class="mb-4">Welcome to the Admin Dashboard, {{ username }}!</h2>
+
+                <!-- flash messages -->
+                 {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-category{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- block admin content -->
+                 <!-- filled with specific admin pages -->
+                  {% block admin_content%}
+                  <p>Use the sidebar to navigate your administration tasks</p>
+
+                  {% endblock %}
+             </main>
+
+
+        </div>
+    </div>
 </div>
 {% endblock %}

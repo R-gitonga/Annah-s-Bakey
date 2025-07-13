@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify, flash, redirect, url
 import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
+from flask_login import login_required, LoginManager, login_user, logout_user, current_user, UserMixin
 
 
 app = Flask(__name__)
@@ -21,6 +22,16 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_super_secret_dev_k
 # The 'or' part is a fallback for local development if SECRET_KEY isn't set as an env var there.
 # In production on Render, os.environ.get('SECRET_KEY') will be used.
 db = SQLAlchemy(app)
+
+login_manager = LoginManager() # Create an instance of LoginManager
+login_manager.init_app(app)    # Initialize it with your Flask app
+login_manager.login_view = 'login' # Tell Flask-Login what route to use for login if @login_required fails
+
+# User loader callback for Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+# --- END NEW ---
 
 # import database models
 
@@ -87,7 +98,7 @@ def add_testimonial():
                 testimonial_text=testimonial_text,
                 rating=rating,
                 image_url=None, #image upload not implemented yet
-                is_approved=True
+                is_approved=False
             )
             db.session.add(new_testimonial)
             db.session.commit()
@@ -154,48 +165,87 @@ def admin_login():
     return render_template('admin_login.html')
 
 # login
-@app.route("/login", methods=['POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-    # collect info from form
-    username = request.form['username']
-    password = request.form['password']
+    if request.method == 'POST':
 
-    user = User.query.filter_by(username=username).first()
-    if user and user.check_password(password):
-        session['username'] = username
-        return redirect(url_for('dashboard'))
-    return render_template("index.html")
+        # collect info from form
+        username = request.form['username']
+        password = request.form['password']
+
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user) #log user in with flask login
+            next_page = request.args.get('next') #redirect to page they tried to access
+            
+            return redirect(next_page or url_for('dashboard'))
+        else:
+            flash("Invalid Username or Password!", "danger")
+    return render_template("admin_login.html")
 
 
 # Register
-@app.route("/register", methods=['POST'])
+@app.route("/register", methods=['POST', 'GET'])
 def register():
-    username = request.form['username']
-    password = request.form['password']
-    user = User.query.filter_by(username=username).first()
-    if user:
-        return render_template("index.html", error="user already here")
-    else:
-        new_user = User(username=username)
-        new_user.set_password(password)
-        db.session.add(new_user)
-        db.session.commit()
-        # create a new session for user
-        session['username'] = username
-        return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user:
+            flash('Username already exists', 'danger')
+            return render_template("admin_login.html", error="user already exists")
+        else:
+            new_user = User(username=username)
+            new_user.set_password(password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Registration Successfull! please login.", 'success')
+            # create a new session for user
+            # session['username'] = username
+            return redirect(url_for('login'))
+        
+    return render_template("admin_login.html")
+    
 
 
 # Dashbooard
 @app.route("/dashboard")
+@login_required
 def dashboard():
-    if "username" in session:
-        return render_template("dashboard.html", username = session['username'])
-    return redirect(url_for('index'))
-
+    testimonials = Testimonial.query.all()
+    return render_template("dashboard.html", username=current_user.username, testimonials=testimonials)
 
 
 # logout
 @app.route("/logout")
+@login_required
 def logout():
-    session.pop('username', None)
-    return redirect(url_for('admin_login'))
+    logout_user()
+    flash("You have been logged out", "info")
+    return redirect(url_for('index'))
+
+# admin testimonials
+@app.route("/admin/testimonials")
+@login_required
+def admin_testimonials():
+    # fetch all testimonials ordered by creation date. later filters like pending only go here
+    testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
+    return render_template("admin/testimonials.html", testimonials=testimonials, username=current_user.username)
+
+
+@app.route("/admin/testimonial/<int:testimonial_id>/<action>")
+@login_required
+def admin_testimonial_action(testimonial_id, action):
+    testimonial = Testimonial.query.get_or_404(testimonial_id)
+
+    if action == 'approve':
+        testimonial.is_approved = True
+        flash(f'Testimonial from {testimonial.customer_name} approved!', 'success')
+    elif action == 'reject':
+        db.session.delete(testimonial)
+        flash(f'Testimonial from {testimonial.customer_name} rejected and deleted!', 'danger')
+    else:
+        flash('Invalid action.', 'warning')
+
+    db.session.commit()
+    return redirect(url_for('admin_testimonials'))

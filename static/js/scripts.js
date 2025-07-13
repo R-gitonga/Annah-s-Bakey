@@ -93,4 +93,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 // You can also trigger the AJAX request here to fetch and update products
             });
         });
+
+    const alerts = document.querySelectorAll('.alert');
+
+    alerts.forEach(function(alertElement) {
+        // check if alert has alert-dismissible class and not already fading out
+        if (alertElement.classList.contains('alert-dismissible') && !alertElement.classList.contains('fade')) {
+            const bsAlert = new bootstrap.Alert(alertElement);
+
+            // set timeout to automatically close alert after 3 seconds
+            setTimeout(function() {
+                bsAlert.dispose(); //use dispose to remove alert from DOM
+            }, 3000);
+        }
+    });
 });
