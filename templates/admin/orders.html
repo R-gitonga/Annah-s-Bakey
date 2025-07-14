@@ -43,26 +43,34 @@
                     </td>
                     <td>
                     <!-- buttons for status change and potentially a "Contact Customer Link" -->
-                        <div class="btn-group" role="group" aria-label="Order actions">
-                            {% if order.status != 'Approved' %}
-                                <a href="{{ url_for('admin_order_status', order_id=order.id, status_action='Approved') }}" class="btn btn-sm btn-primary">Approve</a>
-                            {% endif %}
-                            {% if order.status != 'Completed' %}
-                                <a href="{{ url_for('admin_order_status', order_id=order.id, status_action='Completed') }}" class="btn btn-sm btn-success">complete</a>
-                            {% endif %}
-                            {% if order.status != 'Canceled' %}
-                            <a href="{{ url_for('admin_order_status', order_id=order.id, status_action='Canceled') }}" class="btn btn-sm btn-danger">Cancel</a>
-                            {% endif %}
-                            {% if order.status != 'Pending' %}
-                            <a href="{{ url_for('admin_order_status', order_id=order.id, status_action='Pending') }}"
-                                class="btn btn-sm btn-warning">Re-pend</a>
-                            {% endif %}
-                            <!-- direct whatsapp chat link from admin panel -->
-                             {% if order.customer_phone %}
-                                <a href="https://wa.me/{{ order.customer_phone }}?text={{ ('Hello ' + order.customer_name + '! Regarding your order #' + order.id|string + ' for' + order.product_name + ' from Annah\'s Bakery. ') | urlencode }}" class="btn btn-sm btn-info" target="_blank" title="Chat on Whatsapp">
-                                    <i class="fab fa-whatsapp"></i>Chat
-                                </a>
-                            {% endif %}
+                        <!-- {# Use a dropdown for status actions #} -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ order.id }}"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ order.id }}">
+                                {% if order.status != 'Approved' %}
+                                    <li><a class="dropdown-item" href="{{ url_for('admin_order_status', order_id=order.id, status_action='Approved') }}">Approve</a></li>
+                                {% endif %}
+                                {% if order.status != 'Completed' %}
+                                    <li><a class="dropdown-item" href="{{ url_for('admin_order_status', order_id=order.id, status_action='Completed') }}">Complete</a>
+                                    </li>
+                                {% endif %}
+                                {% if order.status != 'Canceled' %}
+                                    <li><a class="dropdown-item text-danger" href="{{ url_for('admin_order_status', order_id=order.id, status_action='Canceled') }}" onclick="return confirm('Are you sure you want to cancel this order?');">Cancel</a></li>
+                                {% endif %}
+                                {% if order.status != 'Pending' %}
+                                    <li><a class="dropdown-item" href="{{ url_for('admin_order_status', order_id=order.id, status_action='Pending') }}">Re-pend</a></li>
+                                {% endif %}
+                                {% if order.customer_phone %}
+                                    <li><hr class="dropdown-divider">
+                                    </li> {# Optional: Separator #}
+                                    <li><a href="https://wa.me/{{ order.customer_phone }}?text={{ ('Hello ' + order.customer_name + '! Regarding your order #' + order.id|string + ' for ' + order.product_name + ' from Annah\'s Bakery. ') | urlencode }}" class="dropdown-item" target="_blank">
+                                        <i class="fab fa-whatsapp me-1"></i> Chat on WhatsApp
+                                    </a></li>
+                                {% endif %}
+                            </ul>
                         </div>
                     </td>
                 </tr>
