@@ -1,5 +1,5 @@
 from app import app, db
-from models import Category, Product, Testimonial, User
+from models import Category, Product, Testimonial, User, Order
 import os
 
 def init_db_with_sqlalchemy():
@@ -40,6 +40,18 @@ def init_db_with_sqlalchemy():
             Testimonial(customer_name='Sansa Stark', customer_location='The North', testimonial_text='Absolutely divine! The Direwolf cookies were a masterpiece.', rating=5, image_url=None, is_approved=True),
         ]
         db.session.add_all(testimonials)
+        db.session.commit()
+
+        # Sample Orders
+        choco_cake = Product.query.filter_by(name='Chocolate Fudge Cake').first()
+        apple_pie = Product.query.filter_by(name='Apple Pie').first()
+
+        if choco_cake and apple_pie:
+            sample_orders = [
+                Order(product_id=choco_cake.id, product_name=choco_cake.name, product_price=choco_cake.price, status='Pending'),
+                Order(product_id=apple_pie.id, product_name=apple_pie.name, product_price=apple_pie.price, status='Approved'),
+            ]
+            db.session.add_all(sample_orders)
         db.session.commit()
 
 if __name__ == '__main__':

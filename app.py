@@ -1,4 +1,5 @@
 
+from urllib.parse import quote_plus
 from flask import Flask, render_template, request, jsonify, flash, redirect, url_for, session
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -35,7 +36,7 @@ def load_user(user_id):
 
 # import database models
 
-from models import Category, Product, Testimonial, User
+from models import Category, Product, Testimonial, User, Order
 
 
 @app.route("/")
@@ -206,15 +207,12 @@ def register():
         
     return render_template("admin_login.html")
     
-
-
 # Dashbooard
 @app.route("/dashboard")
 @login_required
 def dashboard():
     testimonials = Testimonial.query.all()
     return render_template("dashboard.html", username=current_user.username, testimonials=testimonials)
-
 
 # logout
 @app.route("/logout")
@@ -249,3 +247,65 @@ def admin_testimonial_action(testimonial_id, action):
 
     db.session.commit()
     return redirect(url_for('admin_testimonials'))
+
+# Manage Orders
+@app.route('/create_whatsapp_order', methods=['POST'])
+def create_whatsapp_order():
+    product_id = request.form.get('product_id')
+    customer_name = request.form.get('customer_name')
+    customer_phone = request.form.get('customer_phone')
+    customer_location = request.form.get('customer_location')
+
+    product = Product.query.get_or_404(product_id)
+
+    # 1. create new order record in the database with customer details
+    new_order = Order(
+        product_id=product.id,
+        product_name=product.name,
+        product_price=product.price,
+        customer_name=customer_name,
+        customer_phone=customer_phone,
+        customer_location=customer_location,
+        status='Pending'
+    )
+    db.session.add(new_order)
+    db.session.commit()
+    flash('Your order request has been noted! Redirecting to Whatsapp...', 'info')
+
+    # 2. Prepare whataspp url with prefilled message including order id
+    whatsapp_number = '254702397705'
+    prefill_message = (
+        f"Hello!, I'm interested in ordering the {product.name} (Ksh {product.price:.2f}). "
+        f"My name is {customer_name}, and i'm located at {customer_location}. "
+        f"My order tracking ID is #{new_order.id}. Please confirm details."
+    )
+    encoded_message = quote_plus(prefill_message)
+
+    # 3 Redirect to whatsapp
+    whatsapp_url = f"https://wa.me/{whatsapp_number}?text={encoded_message}"
+    return redirect(whatsapp_url)
+
+
+@app.route("/admin/orders")
+@login_required
+def admin_orders():
+    orders = Order.query.order_by(Order.ordered_at.desc()).all()
+    return render_template('admin/orders.html', orders=orders, username=current_user.username)
+
+
+@app.route("/admin/order/<int:order_id>/<status_action>")
+@login_required
+def admin_order_status(order_id, status_action):
+    order = Order.query.get_or_404(order_id)
+
+    # validation action
+    valid_statuses = ['Approved', 'Completed', 'Canceled', 'Pending']
+    if status_action in valid_statuses:
+        order.status = status_action
+        db.session.commit()
+        flash(f'Order #{order.id} status updated to {status_action}.', 'success')
+    else:
+        flash('Invalid Order action', 'warning')
+
+    return redirect(url_for('admin_orders'))
+

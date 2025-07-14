@@ -2,13 +2,20 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-<div class="container-fluid mt-4">
-    <div class="container text-center">
-        <!-- <h1>Welcome, {{ username }} to Admin Dashboard</h1> -->
+
+    <div class="container-fluid text-center">
         <div class="row">
-            <!-- Sidebar navigation -->
-             <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <div class="position-sticky pt-3">
+             <nav class="navbar navbar-expand-md navbar-light bg-light d-md-none">
+                <div class="container-fluid">
+                    <a href="{{url_for('dashboard')}}" class="navbar-brand">Admin Panel</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarmenu" aria-controls="sidebarmenu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+             </nav>
+             <!-- sidebar navigation visible on md-up collapse on sm -->
+              <nav id="sidebarmenu" class="col-md-3 col-lg-3 d-md-block bg-light sidebar collapse">
+                <div class="text-start position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a href="{{ url_for('dashboard') }}" class="nav-link active" aria-current="page">
@@ -21,15 +28,19 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ url_for('admin_orders') }}" class="nav-link" aria-current="page">
+                                <i class="fas fa-clipboard-list me-2"></i>Manage Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ url_for('logout') }}" class="nav-link text-danger" aria-current="page">
                                 <i class="fas fa-sign-out-alt me-2"></i>Logout
                             </a>
                         </li>
                     </ul>
                 </div>
-             </nav>
-
-             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+              </nav>
+             <main class="col-md-9 ms-sm-auto col-lg-9 px-md-4">
                 <h2 class="mb-4">Welcome to the Admin Dashboard, {{ username }}!</h2>
 
                 <!-- flash messages -->
@@ -55,5 +66,4 @@
 
         </div>
     </div>
-</div>
 {% endblock %}

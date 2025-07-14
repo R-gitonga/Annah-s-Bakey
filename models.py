@@ -47,3 +47,19 @@ class Testimonial(db.Model):
 
     def __repr__(self):
         return f'<Testimonial {self.customer_name}>'
+    
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    product_name = db.Column(db.String(120), nullable=False)
+    product_price = db.Column(db.Float, nullable=False)
+    customer_name = db.Column(db.String(100), nullable=True)
+    customer_phone = db.Column(db.String(50), nullable=True)
+    customer_location = db.Column(db.String(100), nullable=True)
+    ordered_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    status = db.Column(db.String(50), default='Pending', nullable=True) #e.g., Pending, Approved, Completed, Canceled
+    
+    product = db.relationship('Product', backref='orders', lazy=True)
+
+    def __repr__(self):
+        return f'<Order {self.id} - {self.product_name} - {self.status}>'

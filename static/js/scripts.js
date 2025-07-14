@@ -94,6 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+        // alerts
+
     const alerts = document.querySelectorAll('.alert');
 
     alerts.forEach(function(alertElement) {
@@ -106,5 +108,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 bsAlert.dispose(); //use dispose to remove alert from DOM
             }, 3000);
         }
+    });
+
+    // modal functionality for collecting user data
+    const orderModal = document.getElementById('orderModal');
+    orderModal.addEventListener('show.bs.modal', function(event) {
+        // Button that triggered the modal
+        const button = event.relatedTarget;
+
+        // Extract info from data-attributes from the 'button' that triggered the modal
+        const productId = button.getAttribute('data-product-id');
+        const productName = button.getAttribute('data-product-name');
+        const productPrice = button.getAttribute('data-product-price');
+
+        // Extract infor from data-attributes
+        const modalProductId = orderModal.querySelector('#modalProductId');
+        const modalProductName = orderModal.querySelector('#modalProductName');
+        const modalproductPrice = orderModal.querySelector('#modalProductPrice');
+
+        modalProductId.value = productId;
+        modalProductName.textContent = productName;
+        modalproductPrice.textContent= productPrice;
+    });
+
+    // client side validation before submittinh
+    const orderForm = document.getElementById('orderForm')
+    orderForm.addEventListener('submit', function(event) {
+        // basic client server side validation for phone number
+        const phoneInput = document.getElementById('customerPhone');
+        phonePattern = /^\d{12}$/; //regex for exactly 12 digits
+
+        if (!phonePattern.test(phoneInput.value)) {
+            alert('Please enter a valid 12-digit phone number eg (e.g., 2547XXXXXXXX).');
+            event.preventDefault() //stop form submission
+        }
+
+        // more client side validation here.
     });
 });
