@@ -1,0 +1,49 @@
+{% extends 'dashboard.html' %}
+
+{% block admin_content %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Manage Categories</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="{{ url_for('admin_add_category') }}" class="btn btn-sm btn-primary">
+                <i class="fas fa-plus me-1"></i>Add New Category
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category Name</th>
+                    <th>Actions</th>
+                </tr>
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.category_name }}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="categoryActions{{ category.id}}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="categoryActions{{ category.id }}">
+                                    <li><a href="{{ url_for('admin_edit_category', category_id=category.id) }}" class="dropdown-item">Edit</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a href="{{ url_for('admin_delete_category', category_id=category.id) }}" onclick="return confirm('Are you sure you want to delete category {{ category.category_name}}? This will affect products linked to it.'
+                                    );" class="dropdown-item text-danger">Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center">No categories found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </thead>
+        </table>
+    </div>
+{% endblock %}

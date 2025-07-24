@@ -5,6 +5,8 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user, UserMixin
+from werkzeug.utils import secure_filename
+
 
 
 app = Flask(__name__)
@@ -28,6 +30,19 @@ login_manager = LoginManager() # Create an instance of LoginManager
 login_manager.init_app(app)    # Initialize it with your Flask app
 login_manager.login_view = 'login' # Tell Flask-Login what route to use for login if @login_required fails
 
+
+UPLOAD_FOLDER = 'static/images/products'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER) # os.makedirs creates all necessary intermediate directories
+    print(f"Created upload folder: {UPLOAD_FOLDER}")
+
 # User loader callback for Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
@@ -39,31 +54,28 @@ def load_user(user_id):
 from models import Category, Product, Testimonial, User, Order
 
 
+# app.py
+
+# ... (your existing imports) ...
+
 @app.route("/")
 def index():
+    # Fetch all categories to populate the category filter/navigation
+    categories = Category.query.all()
 
-    #fetch category and product using sqlalchemy
-    categories =Category.query.all()
-    products_by_category = {}
-    for category in categories:
-        products_by_category[category.category_name] = Product.query.filter_by(category=category, is_available=True).all()
-
+    # The initial product display on the homepage should be ALL available products,
+    # or you could default to a specific category if you prefer.
+    # This aligns with what filter_products_ajax() would show if "All Categories" is selected.
     initial_products_display = Product.query.filter_by(is_available=True).order_by(Product.name).all()
 
-
-    #fetch approved testimonials
+    # Fetch approved testimonials
     testimonials_data = Testimonial.query.filter_by(is_approved=True).order_by(Testimonial.created_at.desc()).all()
-    #might want to structure testimonials_data differently if you have groups of 3
-    #for now just pass the list directly here, template will adapt slightly
-    #can implement grouping logic with python here
-    selected_category = "All Categories"
 
     return render_template('index.html',
                            categories=categories,
-                           products_by_category=products_by_category,
+                           products=initial_products_display, # Pass initial products directly
                            testimonials=testimonials_data,
-                           products=initial_products_display,
-                           selected_category=selected_category)
+                           selected_category="All Categories") # Keep track of selected category for UI
    
 @app.route('/products/<int:category_id>')
 def products_by_category(category_id):
@@ -309,3 +321,212 @@ def admin_order_status(order_id, status_action):
 
     return redirect(url_for('admin_orders'))
 
+@app.route("/admin/products")
+@login_required
+def admin_products():
+    products = Product.query.order_by(Product.name).all()
+    categories = Category.query.order_by(Category.category_name).all() # Fetch categories here
+
+
+    return render_template("admin/products.html", products=products, categories=categories, username=current_user.username)
+
+@app.route('/admin/add_product', methods=['GET', 'POST'])
+@login_required
+def add_product():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        description = request.form.get('description')
+        price_str = request.form.get('price')
+        category_id_str = request.form.get('category')
+
+        # input validation
+        if not name or not price_str or not category_id_str:
+            flash("Name, Price, and category are required fields.", 'danger')
+            return redirect(url_for('add_product'))
+        try:
+            price = float(price_str)
+            if price <= 0:
+                flash("Price must be a positive number.", "danger")
+                return redirect(url_for(add_product))
+        except ValueError:
+            flash("Invalid price format. Please enter a number.", "danger")
+            return redirect(url_for("add_product"))
+        try:
+            category_id = float(category_id_str)
+            # check of category exists in db
+            if not Category.query.get(category_id):
+                flash("Selected category does not exist.", "danger")
+                return redirect(url_for(add_product))
+        except ValueError:
+            flash("Invalid category selected.", "danger")
+            return redirect(url_for("add_product"))
+
+
+        image_url = ''
+        if 'file' in request.files:
+            file = request.files['file'] #access directly after checking in requests.file
+            if file.filename == '':
+                flash('No selected image file. product will be added without an image.', 'info')
+            elif not allowed_file(file.filename):
+                flash(f"Invalid file type for image: {file.filename}. only {', '.join(ALLOWED_EXTENSIONS)} are allowed.", 'danger')
+                return redirect(url_for('add_product'))
+            else :
+                filename = secure_filename(file.filename)
+                try:
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    image_url = filename
+                except Exception as e:
+                    flash(f"Error saving image: {e}", 'danger')
+                    return redirect(url_for('add_product'))
+
+        new_product = Product(
+            name=name,
+            description=description,
+            price=price,
+            image_url=image_url,
+            is_available=False,
+            category_id=category_id
+        )
+        db.session.add(new_product)
+        db.session.commit()
+        flash(f"Product '{name}' added successfully!", 'success')
+        return redirect(url_for('admin_products'))
+    # GET request: Render the form
+    categories = Category.query.all()
+    return render_template('admin/add_edit_product.html', categories=categories, username=current_user.username)
+
+@app.route('/admin/edit_product/<int:product_id>', methods=['GET', 'POST'])
+@login_required
+def edit_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    categories = Category.query.all()
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        description = request.form.get('description')
+        price_str = request.form.get('price')
+        category_id_str = request.form.get('category')
+                # input validation
+
+        is_available = 'is_available' in request.form
+
+        if not name or not price_str or not category_id_str:
+            flash("Name, Price, and category are required fields.", 'danger')
+            return redirect(url_for('edit_product', product_id=product.id))
+        try:
+            price = float(price_str)
+            if price <= 0:
+                flash("Price must be a positive number.", "danger")
+                return redirect(url_for('edit_product', product_id=product.id))
+        except ValueError:
+            flash("Invalid price format. Please enter a number.", "danger")
+            return redirect(url_for('edit_product', product_id=product.id))
+        try:
+            category_id = int(category_id_str)
+            # check of category exists in db
+            if not Category.query.get(category_id):
+                flash("Selected category does not exist.", "danger")
+                return redirect(url_for('edit_product', product_id=product.id))
+        except ValueError:
+            flash("Invalid category selected.", "danger")
+            return redirect(url_for('edit_product', product_id=product.id))
+
+
+        if 'file' in request.files:
+            file = request.files['file'] #access directly after checking in requests.file
+            if file.filename == '':
+                pass
+            elif not allowed_file(file.filename):
+                flash(f"Invalid file type for image: {file.filename}. only {', '.join(ALLOWED_EXTENSIONS)} are allowed.", 'danger')
+                return redirect(url_for('edit_product', product_id=product.id))
+            else :
+                filename = secure_filename(file.filename)
+                try:
+                    # delete old image if it exists and is not default/empty image
+                    if product.image_url and product.image_url != filename:
+                      old_image_path = os.path.join(app.config['UPLOAD_FOLDER', product.image_url])  
+                      if os.path.exists(old_image_path):
+                          os.remove(old_image_path)
+                          print(f'Deleted old image: {old_image_path}')
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    product.image_url = filename
+                except Exception as e:
+                    flash(f"Error saving image: {e}", 'danger')
+                    return redirect(url_for('edit_product', product_id=product.id))
+                
+        # update product object
+        product.name = name
+        product.description = description
+        product.price = price
+        product.is_available = is_available
+        product.category_id = category_id
+
+        db.session.commit()
+        flash(f"Product '{product.name}' updated successfully!", 'success')
+        return redirect(url_for('admin_products'))
+    return render_template('admin/add_edit_product.html', product=product, categories=categories, username=current_user.username)
+
+@app.route('/admin/categories')
+@login_required
+def admin_categories():
+    # fetch categories ordered by name
+    categories = Category.query.order_by(Category.category_name).all()
+    return render_template("admin/categories.html", categories=categories, username=current_user.username)
+
+
+# route for adding category
+@app.route('/admin/add_category', methods=["GET", "POST"])
+@login_required
+def admin_add_category():
+    if request.method == 'POST':
+        category_name = request.form.get('category_name')
+
+        if not category_name:
+            flash("Category name is required.", "danger")
+            return redirect(url_for('admin_add_category'))
+        # check if category already exists. case sensitive
+        existing_category = Category.query.filter(db.func.lower(Category.category_name) == db.func.lower(category_name)).first()
+        if existing_category:
+            flash(f"Category '{category_name}' already exists.", "warning")
+            return redirect(url_for('admin_add_category'))
+
+        new_category = Category(category_name=category_name)
+        db.session.add(new_category)
+        db.session.commit()
+        flash(f"Category '{category_name}' added succesfully", 'success')
+        return redirect(url_for('admin_categories'))
+    
+    # GET request: Render the form
+    return render_template('admin/add_edit_category.html', username=current_user.username)
+
+# placeholder dor edit categories
+@app.route("/admin/edit_category/<int:category_id>", methods=['GET', 'POST'])
+@login_required
+def admin_edit_category(category_id):
+    category = Category.query.get_or_404(category_id)
+    if request.method == 'POST':
+        flash(f"Category: '{category.category_name}' (ID: {category_id}) should be updated here.", "info")
+        return redirect(url_for('admin_categories'))
+
+    # GET request: render the form with existing category data
+    flash(f"This is the 'Edit Category' page for '{category.category_name}' (ID: {category_id}). coming soon!", "info")
+    return render_template('admin/add_edit_category.html', category=category, username=current_user.username)
+
+# route for deleting category
+@app.route("/admin/delete_category/<int:category_id>", methods=['GET', 'POST'])
+@login_required
+def admin_delete_category(category_id):
+    category = Category.query.get_or_404(category_id)
+    associated_products = Product.query.filter_by(category_id=category.id).count()
+
+    if associated_products > 0:
+        flash(f"Cannot delete category '{category.category_name}' because it has {associated_products} associated product(s). please reassign or delete these products first", 'danger')
+    else:
+        try:
+            db.session.delete(category)
+            db.session.commit()
+            flash(f"Category '{category.category_name}' deleted successfully!", 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Error deleteing category '{category.category_name}': {e}", 'danger')
+    return redirect(url_for('admin_categories'))

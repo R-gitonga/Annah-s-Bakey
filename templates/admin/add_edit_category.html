@@ -1,0 +1,16 @@
+{% extends 'dashboard.html' %}
+
+{% block admin_content %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">{{ 'Edit Category' if category else 'Add New Category' }}</h1>
+    </div>
+    <form method="post" action="{{ url_for('admin_edit_category', category_id=category.id) if category else url_for('admin_add_category') }}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="category_name" class="form-label">Category Name</label>
+            <input type="text" class="form-control" id="category_name" name="category_name" value="{{ category.category_name if category else '' }}" required>
+        </div>
+
+        <button class="btn btn-primary" type="submit">{{ 'Update Category' if category else 'Add Category' }}</button>
+        <a href="{{ url_for('admin_categories') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}

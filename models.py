@@ -63,3 +63,4 @@ class Order(db.Model):
 
     def __repr__(self):
         return f'<Order {self.id} - {self.product_name} - {self.status}>'
+    

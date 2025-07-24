@@ -1,12 +1,11 @@
-{% for product in products %}
+<!-- {% for product in products %}
 <div class="col">
     <div class="card h-100 rounded-top-4">
-        <!-- {# Access using dictionary-style for sqlite3 row #} -->
+        
          <img src="{{ url_for('static', filename='images/' + product.image_url) }}" alt="{{ product.name }}" class="card-img-top product-img">
          <div class="card-body">
             <h5 class="card-title text-center">{{ product.name }}</h5>
             <p class="card-text fw-bold">Price: {{ product.price }}</p>
-            <!-- <p class="card-text">{{ product['product_description'] }}</p> -->
             <p class="card-text text-muted"><small>Category: {{ product.category.category_name }}</small></p>
             <div class="card-button text-center">
                 <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-primary">View Details</a>
@@ -15,4 +14,31 @@
          </div>
     </div>
 </div>
-{% endfor %}
+{% endfor %} -->
+
+
+{# templates/_product_cards.html #}
+{% if products %}
+    {% for product in products %}
+        <div class="col-md-4 mb-4"> {# Adjust column size as needed, e.g., col-lg-3, col-sm-6 #}
+            <div class="card h-100">
+                {% if product.image_url %}
+                    <img src="{{ url_for('static', filename='images/products/' + product.image_url) }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/placeholder.png') }}" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-muted">{{ product.category.category_name }}</p>
+                    <p class="card-text">{{ product.description | truncate(80) }}</p> {# Using truncate filter #}
+                    <h4 class="mt-auto">Ksh {{ "%.2f"|format(product.price) }}</h4>
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-primary mt-2">View Details</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="col-12 text-center py-5">
+        <p class="lead">No products found for this category.</p>
+    </div>
+{% endif %}
